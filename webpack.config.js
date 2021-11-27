@@ -53,7 +53,6 @@ module.exports = (env, agrv) => {
       path: path.join(__dirname, '/build'),
       filename: 'bundle.js'
     },
-    devtool: 'source-map',
     module: {
       rules: [
         {
@@ -62,8 +61,18 @@ module.exports = (env, agrv) => {
           use: ['babel-loader']
         },
         {
-          test: [/\.(sa|sc)ss$/, /\.css$/],
-          use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
+          test: /\.(s[ac]ss|css)$/,
+          use: [
+            MiniCssExtractPlugin.loader,
+            {
+              loader: 'css-loader',
+              options: { sourceMap: isDev ? true : false }
+            },
+            {
+              loader: 'sass-loader',
+              options: { sourceMap: isDev ? true : false }
+            }
+          ]
         },
         { test: /\.txt$/, use: 'raw-loader' }
       ]
@@ -76,7 +85,8 @@ module.exports = (env, agrv) => {
         routes: path.resolve(__dirname, './src/routes/'),
         components: path.resolve(__dirname, './src/components/'),
         modules: path.resolve(__dirname, './src/modules/'),
-        stylesheets: path.resolve(__dirname, './src/stylesheet/'),
+        stylesheet: path.resolve(__dirname, './src/stylesheet/'),
+        apis: path.resolve(__dirname, './src/apis/'),
         utils: path.resolve(__dirname, './src/utils/'),
         pages: path.resolve(__dirname, './src/pages/'),
         template: path.resolve(__dirname, './src/template/')
@@ -95,7 +105,10 @@ module.exports = (env, agrv) => {
       compress: true,
       port: 8080
     },
-    devtool: isDev ? 'source-map' : false,
+    performance: {
+      maxEntrypointSize: 800000 //  Khi có 1 file build vượt quá giới hạn này (tính bằng byte) thì sẽ bị warning trên terminal.
+    },
+    devtool: 'inline-source-map',
     plugins: isDev ? basePlugins : prodPlugins
   };
 };
