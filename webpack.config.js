@@ -74,7 +74,18 @@ module.exports = (env, agrv) => {
             }
           ]
         },
-        { test: /\.txt$/, use: 'raw-loader' }
+        { test: /\.txt$/, use: 'raw-loader' },
+        {
+          test: /\.(png|svg|jpg|gif)$/,
+          use: [
+            {
+              loader: 'file-loader',
+              options: {
+                name: isDev ? '[path][name].[ext]' : 'static/media/[name].[contenthash:6].[ext]'
+              }
+            }
+          ]
+        }
       ]
     },
     resolve: {
@@ -84,6 +95,7 @@ module.exports = (env, agrv) => {
         App: path.resolve(__dirname, './src/App/'),
         routes: path.resolve(__dirname, './src/routes/'),
         components: path.resolve(__dirname, './src/components/'),
+        assets: path.resolve(__dirname, './src/assets/'),
         modules: path.resolve(__dirname, './src/modules/'),
         stylesheet: path.resolve(__dirname, './src/stylesheet/'),
         apis: path.resolve(__dirname, './src/apis/'),

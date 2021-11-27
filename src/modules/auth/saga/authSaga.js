@@ -2,14 +2,17 @@ import { all, call, put, takeLatest } from '@redux-saga/core/effects';
 import { history } from 'App/App';
 import { Message } from 'utils/Message';
 import { errorNotification, getError, successNotification } from 'utils/Notifcation';
-import { LOGIN_USER } from '../actions/authAction';
+import { LOGIN_USER, LOGOUT_USER } from '../actions/authAction';
 import LoginAction from '../actions/authAction';
 import { API } from 'apis/index';
 
-function setAccessToken(accessToken) {
+function setAccessToken(accessToken, refreshToken) {
   //   const expiresAt = moment(authResult.expiration).valueOf()
   localStorage.setItem('accessToken', accessToken);
   sessionStorage.setItem('accessToken', accessToken);
+
+  localStorage.setItem('refreshToken', refreshToken);
+  sessionStorage.setItem('refreshToken', refreshToken);
 
   const loggedIn = 'true';
   localStorage.setItem('logged-in', loggedIn);
@@ -18,8 +21,9 @@ function setAccessToken(accessToken) {
 
 function removeAccessToken() {
   localStorage.removeItem('accessToken');
-
   sessionStorage.removeItem('accessToken');
+  localStorage.removeItem('refreshToken');
+  sessionStorage.removeItem('refreshToken');
 
   const loggedIn = 'false';
   localStorage.setItem('logged-in', loggedIn);
@@ -29,6 +33,18 @@ function removeAccessToken() {
 export function getAccessToken() {
   const accessToken = localStorage.getItem('accessToken') || sessionStorage.getItem('accessToken');
   return accessToken;
+}
+
+export function isLogin() {
+  const login = localStorage.getItem('logged-in');
+  if (login === 'true') {
+    return true;
+  }
+  return false;
+}
+
+export function getExpiration() {
+  return localStorage.getItem('expires_at');
 }
 
 export function checkAuthenticate() {
@@ -45,14 +61,14 @@ export function changeRoute() {
 
 function* loginUser({ payload }) {
   try {
-    yield put(LoginAction.LOGIN_USER.REQUEST);
+    yield put({ type: LoginAction.LOGIN_USER.REQUEST });
     const { data } = yield call(API.accountAPI.loginUser, payload);
     if (data) {
-      const { token } = data;
-      setAccessToken(token);
+      const { accessToken, refreshToken } = data;
+      setAccessToken(accessToken, refreshToken);
     }
 
-    yield put(LoginAction.LOGIN_USER.SUCCESS);
+    yield put({ type: LoginAction.LOGIN_USER.SUCCESS });
 
     successNotification(Message.loginSuccess);
 

@@ -1,6 +1,6 @@
 import { reduce } from 'underscore';
 
-export const BASE_URL = 'http://178.128.56.76:3003/api/';
+export const BASE_URL = 'http://localhost:3000/';
 export const API_VERSION_NONE = '';
 export const API_VERSION_1 = 'v1';
 export const API_VERSION_2 = 'v2';

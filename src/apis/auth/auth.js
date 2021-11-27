@@ -1,8 +1,7 @@
 import axios from 'axios';
 
-// {email: "",password: ""}
 const loginUser = (user) => {
-  return axios.post(`/auth/login`, user);
+  return axios.post(`/login`, user);
 };
 
 const Account = {

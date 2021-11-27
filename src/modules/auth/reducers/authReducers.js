@@ -13,7 +13,6 @@ function authentication(state = initialState, { type, payload }) {
         ...state,
         isFetching: true,
         isAuthenticated: false,
-        user: payload,
         error: ''
       };
     case LoginAction.LOGIN_USER.SUCCESS:
@@ -21,7 +20,6 @@ function authentication(state = initialState, { type, payload }) {
         ...state,
         isFetching: false,
         isAuthenticated: true,
-        user: payload.user,
         error: ''
       };
     case LoginAction.LOGIN_USER.ERROR:

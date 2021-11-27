@@ -1,11 +1,11 @@
 import React from 'react';
 import { Divider, TextP } from 'stylesheet/Text/Text.styled';
-import LoginFrom from '../components/LoginFrom';
+import LoginForm from '../components/LoginForm';
 
 export default function LoginContainer() {
   return (
     <>
-      <LoginFrom />
+      <LoginForm />
       <div style={{ marginTop: '4.6875rem' }}>
         <Divider />
         <TextP>

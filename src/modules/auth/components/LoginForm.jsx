@@ -6,27 +6,26 @@ import { ButtonStyled } from 'stylesheet/Button/Button.styled';
 import { FormGroup, InputAntd } from 'stylesheet/Input/Input.styled';
 import { TextSpan } from 'stylesheet/Text/Text.styled';
 import * as Yup from 'yup';
-import { LOGIN_USER } from '../actions/loginAction';
+import LoginAction from '../actions/authAction';
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Email is required'),
   password: Yup.string().required('Password is required')
 });
 
-export default function LoginFrom() {
+export default function LoginForm() {
   const dispatch = useDispatch();
 
-  //   const onLogin = (values) => {
-  //     dispatch({ type: LOGIN_USER, payload: values });
-  //   };
+  const onLogin = (values) => {
+    dispatch(LoginAction.loginUser(values));
+  };
 
   return (
     <div>
       <Formik
         initialValues={{ email: '', password: '' }}
         onSubmit={(values, { resetForm }) => {
-          //   onLogin(values);
-          console.log(values);
+          onLogin(values);
           resetForm();
         }}
         validationSchema={LoginSchema}>

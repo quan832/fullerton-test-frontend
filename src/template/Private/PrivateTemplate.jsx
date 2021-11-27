@@ -6,9 +6,7 @@ import { LayoutStyled, ContentStyled } from 'stylesheet/Layout/Layout.styled';
 
 const PrivateTemplate = function (props) {
   const { Component, ...restRoute } = props;
-  // const { isAuthenticated } = useSelector((state) => state.auth);
-
-  const isAuthenticated = true;
+  const { isAuthenticated } = useSelector((state) => state.auth);
 
   return (
     <Route

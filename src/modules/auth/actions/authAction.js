@@ -14,7 +14,7 @@ export default class LoginAction {
   static loginUser(user) {
     return {
       type: LOGIN_USER,
-      user: user
+      payload: user
     };
   }
 }
