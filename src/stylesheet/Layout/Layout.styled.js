@@ -23,7 +23,7 @@ export const HeaderStyled = styled(Header)`
     font-size: 20px;
     &:hover {
       opacity: 0.5;
-      cursor: pointer;
+      cursor pointer;
     }
   }
 `;

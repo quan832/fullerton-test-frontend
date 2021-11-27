@@ -450,3 +450,20 @@ button:focus {
     }
   }
 }
+
+.ant-layout-sider-children {
+  position: relative;
+}
+
+.logout-menu {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 15px;
+  width: 100%;
+}
+
+.hover-primary:hover {
+  color: #0052cc !important;
+  cursor: pointer;
+}

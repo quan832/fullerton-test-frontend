@@ -1,3 +1,4 @@
+import LeftMenu from 'components/LeftMenu/LeftMenu';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Route, Redirect } from 'react-router-dom';
@@ -13,10 +14,11 @@ const PrivateTemplate = function (props) {
       {...restRoute}
       render={(propsRoute) => {
         return isAuthenticated ? (
-          <LayoutStyled className="layout">
-            <ContentStyled>
+          <LayoutStyled className="site-layout">
+            <LeftMenu />
+            <LayoutStyled className="site-layout">
               <Component {...propsRoute} />
-            </ContentStyled>
+            </LayoutStyled>
           </LayoutStyled>
         ) : (
           <Redirect to="/login" />
