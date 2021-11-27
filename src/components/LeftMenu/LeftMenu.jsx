@@ -41,7 +41,6 @@ export default function LeftMenu() {
           <img src={logo} alt=""></img>
         </div>
         <Divider />
-
         <Menu
           defaultSelectedKeys={['1']}
           defaultOpenKeys={['sub1']}

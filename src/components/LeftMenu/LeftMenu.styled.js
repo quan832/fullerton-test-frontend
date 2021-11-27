@@ -3,6 +3,7 @@ import styled from 'styled-components';
 export const Container = styled.div`
   .ant-layout-sider {
     height: 100%;
+    box-shadow: -3px 0 5px 0 #555;
   }
 
   .ant-layout-sider-children {

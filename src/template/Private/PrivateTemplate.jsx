@@ -3,7 +3,8 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Route, Redirect } from 'react-router-dom';
 
-import { LayoutStyled, ContentStyled } from 'stylesheet/Layout/Layout.styled';
+import { LayoutStyled } from 'stylesheet/Layout/Layout.styled';
+import { PrivateContainer } from './PrivateTemplate.styled';
 
 const PrivateTemplate = function (props) {
   const { Component, ...restRoute } = props;
@@ -17,7 +18,9 @@ const PrivateTemplate = function (props) {
           <LayoutStyled className="site-layout">
             <LeftMenu />
             <LayoutStyled className="site-layout">
-              <Component {...propsRoute} />
+              <PrivateContainer>
+                <Component {...propsRoute} />
+              </PrivateContainer>
             </LayoutStyled>
           </LayoutStyled>
         ) : (

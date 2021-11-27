@@ -11,6 +11,27 @@ export const PrimaryTitle = styled.h1`
     css`
       color: #2a295c;
     `}
+
+  ${(props) =>
+    props.purple2 &&
+    css`
+      color: #5624d0;
+    `}
+
+
+
+  ${(props) =>
+    props.large &&
+    css`
+      font-size: 3rem;
+    `}
+`;
+
+export const HeaderContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.6rem;
 `;
 
 export const SubTitle = styled.h2`

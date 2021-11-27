@@ -9,6 +9,13 @@ export const FlexDiv = styled.div`
     `}
 
   ${(props) =>
+    props.alignCenter &&
+    css`
+      align-items: center;
+    `}
+    
+
+  ${(props) =>
     props.spaceBetween &&
     css`
       justify-content: space-between;
