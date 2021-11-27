@@ -13,11 +13,20 @@ import {
 import { Container } from './LeftMenu.styled';
 import logo from 'assets/images/logo.png';
 import { FlexDiv } from 'stylesheet/div/div.styled';
+import { useDispatch } from 'react-redux';
+import LoginAction from 'modules/auth/actions/authAction';
 
 const { Sider } = Layout;
 
 export default function LeftMenu() {
   const [collapsed, setCollapsed] = React.useState(false);
+
+  const dispatch = useDispatch();
+
+  const onLogout = () => {
+    dispatch(LoginAction.logoutUser());
+  };
+
   return (
     <Container>
       <Sider
@@ -72,7 +81,9 @@ export default function LeftMenu() {
         <div className="logout-menu">
           <Divider />
           <FlexDiv rowReverse spaceBetween>
-            <p className="font-weight-medium text-dark hover-primary">Logout</p>
+            <p onClick={onLogout} className="font-weight-medium text-dark hover-primary">
+              Logout
+            </p>
             <p className="text-fade">Booking System</p>
           </FlexDiv>
         </div>

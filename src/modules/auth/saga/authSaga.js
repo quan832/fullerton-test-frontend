@@ -78,10 +78,10 @@ function* loginUser({ payload }) {
   }
 }
 
-function* logoutUser({ payload: goToLogin }) {
+function* logoutUser() {
   try {
     removeAccessToken();
-    goToLogin();
+    history.push('/login');
     successNotification(Message.logoutSuccess);
   } catch (error) {
     errorNotification(getError(error));

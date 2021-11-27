@@ -1,4 +1,4 @@
-import LoginAction from '../actions/authAction';
+import LoginAction, { LOGOUT_USER } from '../actions/authAction';
 import { checkAuthenticate } from '../saga/authSaga.js';
 
 const initialState = {
@@ -27,6 +27,11 @@ function authentication(state = initialState, { type, payload }) {
         ...state,
         error: payload,
         isFetching: false,
+        isAuthenticated: false
+      };
+    case LOGOUT_USER:
+      return {
+        ...state,
         isAuthenticated: false
       };
     // case actionLogout.LOGOUT_USER.SUCCESS:
