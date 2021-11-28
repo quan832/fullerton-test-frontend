@@ -8,7 +8,7 @@ import {
   BookingItemStyled
 } from './BookingItem.styled';
 
-export default function BookingItem() {
+export default function BookingItem({ title }) {
   return (
     <Row>
       <Col span={24}>
@@ -34,7 +34,7 @@ export default function BookingItem() {
                 </span>
               </div> */}
                     <div className="ml-15">
-                      <h5 className="mb-0">Booking</h5>
+                      <h5 className="mb-0">{title}</h5>
                       {/* <div>{renderDraftPublish()}</div> */}
                     </div>
                   </div>

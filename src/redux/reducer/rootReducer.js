@@ -2,11 +2,13 @@ import { combineReducers } from 'redux';
 
 import AppReducer from 'App/reducer/App.reducer.js';
 import AuthReducer from 'modules/auth/reducers/authReducers.js';
+import DashboardReducer from "modules/dashboard/reducers/dashboardReducer.js"
 
 const appReducer = combineReducers({
   /* your app’s top-level reducers */
   app: AppReducer,
-  auth: AuthReducer
+  auth: AuthReducer,
+  dashboard: DashboardReducer,
 });
 
 const rootReducer = (state, action) => {

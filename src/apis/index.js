@@ -5,7 +5,7 @@ import qs from 'qs';
 import { API_VERSION_1, API_VERSION_2, API_VERSION_NONE, BASE_URL } from './const';
 // import { getAccessToken } from '@/modules/authentication/saga/authenticationSaga';
 import accountAPI from './auth/auth';
-
+import bookingAPI from "./bookings/bookings"
 // axios.defaults.params = axios.defaults.params || { culture: "en" }
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
@@ -66,4 +66,4 @@ export function getErrorMessage(error) {
   return message;
 }
 
-export const API = { accountAPI };
+export const API = { accountAPI, bookingAPI };

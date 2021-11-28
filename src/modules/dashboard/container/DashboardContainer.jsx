@@ -4,16 +4,30 @@ import { DashboardContainerStyled, DashboardLastChild } from './DashboardContain
 import { Tabs, Pagination } from 'antd';
 import BookingList from '../components/BookingList/BookingList';
 import { FlexDiv } from 'stylesheet/div/div.styled';
+import { useDispatch, useSelector } from 'react-redux';
+import DashboardAction from '../actions/dashboardAction';
+import { Spin } from 'antd';
+
 const { TabPane } = Tabs;
 
 export default function DashboardContainer() {
+  const { total, page, isFetching } = useSelector((state) => state.dashboard.bookings);
+
+  const dispatch = useDispatch();
+
+  const onChangePage = (page) => {
+    dispatch(DashboardAction.fetchBookings({ page: page }));
+  };
+
   return (
     <DashboardContainerStyled>
       <Header />
       <div className="mt-20 pl-5">
         <Tabs defaultActiveKey="1">
           <TabPane tab="Upcoming" key="1" style={{ height: '100%' }}>
-            <BookingList />
+            <Spin spinning={isFetching}>
+              <BookingList />
+            </Spin>
           </TabPane>
           <TabPane tab="Past bookings" key="2">
             Content of Tab Pane 2
@@ -23,10 +37,11 @@ export default function DashboardContainer() {
       <DashboardLastChild className="mt-20">
         <FlexDiv>
           <Pagination
-            total={85}
+            total={total}
             showTotal={(total) => `Total ${total} items`}
-            defaultPageSize={20}
-            defaultCurrent={1}
+            defaultPageSize={4}
+            defaultCurrent={page}
+            onChange={(page) => onChangePage(page)}
           />
         </FlexDiv>
       </DashboardLastChild>
