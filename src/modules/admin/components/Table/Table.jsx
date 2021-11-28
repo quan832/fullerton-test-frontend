@@ -16,7 +16,7 @@ const columns = [
       compare: (a, b) => a.title.localeCompare(b.title)
     },
     render: (text) => <a>{text}</a>,
-    width: '25%'
+    width: '20%'
   },
   {
     title: 'Booking Place',
@@ -25,7 +25,16 @@ const columns = [
     sorter: {
       compare: (a, b) => a.place.localeCompare(b.place)
     },
-    width: '35%'
+    width: '30%'
+  },
+  {
+    title: 'Booking User',
+    dataIndex: 'email',
+    key: 'email',
+    sorter: {
+      compare: (a, b) => a.place.localeCompare(b.place)
+    },
+    width: '15%'
   },
   {
     title: 'Booking Category',
@@ -91,7 +100,8 @@ const expandedRowRender = (id, date) => {
       title: 'Date',
       dataIndex: 'startDate',
       key: `startDate`,
-      render: (startDate) => moment(startDate).format(FORMAT_DATE)
+      render: (startDate) => moment(startDate).format(FORMAT_DATE),
+      width: '50%'
     },
     {
       title: 'Status',
@@ -103,6 +113,7 @@ const expandedRowRender = (id, date) => {
       title: 'Action',
       dataIndex: 'operation',
       key: `operation`,
+      width: '20%',
       render: () => <ButtonStyled purple>Approve</ButtonStyled>
     }
   ];
