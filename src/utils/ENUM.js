@@ -33,7 +33,7 @@ export const PROGRESS_STATUS = (status) => {
       return {
         message: 'Rejected',
         progress: 0,
-        color: '#f8f9fa'
+        color: '#d1d3e0'
       }
     default:
       return {
