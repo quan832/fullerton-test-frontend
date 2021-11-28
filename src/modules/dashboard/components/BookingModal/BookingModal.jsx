@@ -6,13 +6,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import { DatePickerAntd, FormGroup, InputAntd, LabelStyled } from 'stylesheet/Input/Input.styled';
 import DashboardAction from './../../actions/dashboardAction';
 import moment from 'moment';
-import { FORMAT_DATE } from 'utils/ENUM';
+import { FORMAT_DATE, TYPE_MODAL } from 'utils/ENUM';
 import { ButtonStyled } from 'stylesheet/Button/Button.styled';
 import { DeleteOutlined } from '@ant-design/icons';
 
-const renderProposedDate = (date) => {
+const defaultDate = [
+  { startDate: '', isConfirm: false },
+  { startDate: '', isConfirm: false },
+  { startDate: '', isConfirm: false }
+];
+
+const renderProposedDate = (date, isDisabled) => {
   return date.map((item, index) => {
-    const defaultValue = moment(item.startDate).format(FORMAT_DATE);
+    let defaultValue = isDisabled ? moment(item.startDate).format(FORMAT_DATE) : null;
     return (
       <FormGroup key={index}>
         <Field name="email">
@@ -23,9 +29,9 @@ const renderProposedDate = (date) => {
                 name="title"
                 id="title"
                 small
-                disabled
+                disabled={isDisabled}
                 format={FORMAT_DATE}
-                defaultValue={moment(defaultValue, FORMAT_DATE)}
+                defaultValue={isDisabled ? moment(defaultValue, FORMAT_DATE) : null}
               />
             </>
           )}
@@ -35,15 +41,24 @@ const renderProposedDate = (date) => {
   });
 };
 
-export default function BookingModal({ isOpen, closeModal, id }) {
+const isEditModal = (type) => {
+  return type === TYPE_MODAL.edit ? true : false;
+};
+
+export default function BookingModal({ isOpen, closeModal, id, type }) {
   const dispatch = useDispatch();
+
+  const disable = type === TYPE_MODAL.edit ? true : false;
 
   const {
     categoryOptions,
     bookings: { data }
   } = useSelector((state) => state.dashboard);
 
-  const bookingItem = data.find((item) => item.id === id);
+  let bookingItem;
+  if (id) {
+    bookingItem = data.find((item) => item.id === id);
+  }
 
   const onFetchCategoryOptions = () => {
     dispatch(DashboardAction.fetchCategoryOptions());
@@ -54,7 +69,7 @@ export default function BookingModal({ isOpen, closeModal, id }) {
   }, []);
 
   return (
-    <Modal title="Edit Booking Modal" width={850} visible={isOpen} onCancel={closeModal}>
+    <Modal title={`${type} Booking Modal`} width={850} visible={isOpen} onCancel={closeModal}>
       <Formik
         initialValues={{ title: '', place: '', status: '', date: [], category: '' }}
         onSubmit={(values, { resetForm }) => {
@@ -73,8 +88,8 @@ export default function BookingModal({ isOpen, closeModal, id }) {
                       id="title"
                       small
                       {...field}
-                      value={bookingItem.title}
-                      disabled
+                      value={isEditModal(type) ? bookingItem.title : null}
+                      disabled={isEditModal(type)}
                     />
                   </>
                 )}
@@ -91,9 +106,9 @@ export default function BookingModal({ isOpen, closeModal, id }) {
                           name="place"
                           id="place"
                           small
-                          disabled
+                          disabled={isEditModal(type)}
                           {...field}
-                          value={bookingItem.place}
+                          value={isEditModal(type) ? bookingItem.place : null}
                         />
                       </>
                     )}
@@ -111,7 +126,7 @@ export default function BookingModal({ isOpen, closeModal, id }) {
                           options={categoryOptions}
                           name="category"
                           id="category"
-                          disabled
+                          disabled={isEditModal(type)}
                           small
                           {...field}
                         />
@@ -121,10 +136,12 @@ export default function BookingModal({ isOpen, closeModal, id }) {
                 </FormGroup>
               </Col>
             </Row>
-            {renderProposedDate(bookingItem.date)}
-            <ButtonStyled dangerText className="mt-10" w100 input>
-              Delete <DeleteOutlined />
-            </ButtonStyled>
+            {renderProposedDate(type === TYPE_MODAL.edit ? bookingItem.date : defaultDate, disable)}
+            {isEditModal(type) ? (
+              <ButtonStyled dangerText className="mt-10" w100 input>
+                Delete <DeleteOutlined />
+              </ButtonStyled>
+            ) : null}
           </Form>
         )}
       </Formik>

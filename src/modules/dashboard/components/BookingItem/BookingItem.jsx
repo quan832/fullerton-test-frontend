@@ -3,6 +3,7 @@ import DashboardAction from 'modules/dashboard/actions/dashboardAction';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { FlexDiv } from 'stylesheet/div/div.styled';
+import { TYPE_MODAL } from 'utils/ENUM';
 import {
   BookingCardImage,
   BookingProgress,
@@ -14,7 +15,7 @@ export default function BookingItem({ id, title }) {
   const dispatch = useDispatch();
 
   const onOpenModal = () => {
-    dispatch(DashboardAction.openBookingModal(id));
+    dispatch(DashboardAction.openBookingModal(id, TYPE_MODAL.edit));
   };
 
   return (

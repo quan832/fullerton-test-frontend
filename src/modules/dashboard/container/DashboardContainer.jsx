@@ -9,21 +9,30 @@ import DashboardAction from '../actions/dashboardAction';
 import { Spin } from 'antd';
 import { ButtonStyled } from 'stylesheet/Button/Button.styled';
 import BookingModal from '../components/BookingModal/BookingModal';
+import { TYPE_MODAL } from 'utils/ENUM';
 
 const { TabPane } = Tabs;
 
-const renderAddBooking = () => {
-  return <ButtonStyled purple>Add Booking</ButtonStyled>;
+const renderAddBooking = (openAddModal) => {
+  return (
+    <ButtonStyled purple onClick={openAddModal}>
+      Add Booking
+    </ButtonStyled>
+  );
 };
 
 export default function DashboardContainer() {
   const { total, page, isFetching } = useSelector((state) => state.dashboard.bookings);
   const {
-    bookingModal: { isOpenModal, modalOpenId }
+    bookingModal: { isOpenModal, modalOpenId, type }
   } = useSelector((state) => state.dashboard);
 
   const onCloseModal = () => {
     dispatch(DashboardAction.closeBookingModal());
+  };
+
+  const onOpenAddModal = () => {
+    dispatch(DashboardAction.openBookingModal(null, TYPE_MODAL.add));
   };
 
   const dispatch = useDispatch();
@@ -36,7 +45,7 @@ export default function DashboardContainer() {
     <DashboardContainerStyled>
       <Header />
       <div className="mt-20 pl-5">
-        <Tabs defaultActiveKey="1" tabBarExtraContent={renderAddBooking()}>
+        <Tabs defaultActiveKey="1" tabBarExtraContent={renderAddBooking(onOpenAddModal)}>
           <TabPane tab="Upcoming" key="1" style={{ height: '100%' }}>
             <Spin spinning={isFetching}>
               <BookingList />
@@ -58,7 +67,7 @@ export default function DashboardContainer() {
           />
         </FlexDiv>
       </DashboardLastChild>
-      <BookingModal isOpen={isOpenModal} id={modalOpenId} closeModal={onCloseModal} />
+      <BookingModal isOpen={isOpenModal} id={modalOpenId} closeModal={onCloseModal} type={type} />
     </DashboardContainerStyled>
   );
 }

@@ -39,10 +39,10 @@ export default class DashboardAction {
         };
     }
 
-    static openBookingModal(id) {
+    static openBookingModal(id, type) {
         return {
             type: OPEN_BOOKING_MODAL,
-            payload: { id }
+            payload: { id, type }
         };
     }
 

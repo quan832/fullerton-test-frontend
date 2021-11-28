@@ -4,6 +4,7 @@ const initialState = {
     bookingModal: {
         isOpenModal: false,
         modalOpenId: null,
+        type: null
     },
     categoryOptions: [],
     bookings: {
@@ -22,7 +23,8 @@ const dashboardReducer = (state = initialState, { type, payload }) => {
                 bookingModal: {
                     ...state.bookingModal,
                     isOpenModal: true,
-                    modalOpenId: payload.id
+                    modalOpenId: payload.id,
+                    type: payload.type
                 }
             }
         case CLOSE_BOOKING_MODAL:
@@ -31,7 +33,8 @@ const dashboardReducer = (state = initialState, { type, payload }) => {
                 bookingModal: {
                     ...state.bookingModal,
                     isOpenModal: false,
-                    nodalOpen: null
+                    nodalOpen: null,
+                    type: null
                 }
             }
         case DashboardAction.FETCH_BOOKINGS.REQUEST:

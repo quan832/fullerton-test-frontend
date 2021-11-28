@@ -4,4 +4,9 @@ export const SORT = {
   DESC: 'DESC'
 };
 
+export const TYPE_MODAL = {
+  edit: 'Edit',
+  add: 'Add'
+}
+
 export const FORMAT_DATE = 'DD/MM/YYYY'
