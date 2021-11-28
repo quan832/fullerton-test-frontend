@@ -10,11 +10,11 @@ import {
   BookingItemStyled
 } from './BookingItem.styled';
 
-export default function BookingItem({ title }) {
+export default function BookingItem({ id, title }) {
   const dispatch = useDispatch();
 
   const onOpenModal = () => {
-    dispatch(DashboardAction.openBookingModal());
+    dispatch(DashboardAction.openBookingModal(id));
   };
 
   return (

@@ -18,7 +18,9 @@ const renderAddBooking = () => {
 
 export default function DashboardContainer() {
   const { total, page, isFetching } = useSelector((state) => state.dashboard.bookings);
-  const { isOpenModal } = useSelector((state) => state.dashboard);
+  const {
+    bookingModal: { isOpenModal, modalOpenId }
+  } = useSelector((state) => state.dashboard);
 
   const onCloseModal = () => {
     dispatch(DashboardAction.closeBookingModal());
@@ -56,7 +58,7 @@ export default function DashboardContainer() {
           />
         </FlexDiv>
       </DashboardLastChild>
-      <BookingModal isOpen={isOpenModal} closeModal={onCloseModal} />
+      <BookingModal isOpen={isOpenModal} id={modalOpenId} closeModal={onCloseModal} />
     </DashboardContainerStyled>
   );
 }

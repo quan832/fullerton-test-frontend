@@ -36,6 +36,25 @@ export const ButtonStyled = styled.button`
     `}
 
   ${(props) =>
+    props.input &&
+    css`
+      border: 0.0625rem solid #dfe3e9;
+      border-radius: 0.1875rem;
+      background-color: #fff;
+      font-size: 1rem;
+      font-weight: 500;
+      &:hover {
+        opacity: 50%;
+      }
+    `}
+
+     ${(props) =>
+    props.dangerText &&
+    css`
+      color: #f32013;
+    `}
+
+  ${(props) =>
     props.w100 &&
     css`
       width: 100%;

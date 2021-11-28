@@ -14,13 +14,18 @@ const SelectStyle = {
   color: '#1c1d1f'
 };
 
-export default function SelectInput({ defaultValue, options }) {
-  const renderOptions = options.map((child) => <Option value={child.id}>{child.title}</Option>);
+export default function SelectInput({ defaultValue, options, disabled }) {
+  const renderOptions = options.map((child, index) => (
+    <Option key={index} value={child.id}>
+      {child.title}
+    </Option>
+  ));
 
   return (
     <SelectInputStyled>
       <Select
         showSearch
+        disabled={disabled}
         //   placeholder={placeholder}
         defaultValue={defaultValue}
         style={SelectStyle}

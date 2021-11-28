@@ -1,7 +1,10 @@
 const { default: DashboardAction, OPEN_BOOKING_MODAL, CLOSE_BOOKING_MODAL } = require("../actions/dashboardAction");
 
 const initialState = {
-    isOpenModal: false,
+    bookingModal: {
+        isOpenModal: false,
+        modalOpenId: null,
+    },
     categoryOptions: [],
     bookings: {
         data: [],
@@ -16,12 +19,20 @@ const dashboardReducer = (state = initialState, { type, payload }) => {
         case OPEN_BOOKING_MODAL:
             return {
                 ...state,
-                isOpenModal: true,
+                bookingModal: {
+                    ...state.bookingModal,
+                    isOpenModal: true,
+                    modalOpenId: payload.id
+                }
             }
         case CLOSE_BOOKING_MODAL:
             return {
                 ...state,
-                isOpenModal: false,
+                bookingModal: {
+                    ...state.bookingModal,
+                    isOpenModal: false,
+                    nodalOpen: null
+                }
             }
         case DashboardAction.FETCH_BOOKINGS.REQUEST:
             return {
