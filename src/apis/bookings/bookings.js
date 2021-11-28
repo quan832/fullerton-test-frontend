@@ -6,8 +6,12 @@ const fetchBookings = (page = 1, perPage = 4, filter = null) => {
     });
 };
 
+const deleteBooking = (id) => {
+    return axios.delete(`/bookings/${id}`,);
+};
+
 const Bookings = {
-    fetchBookings
+    fetchBookings, deleteBooking
 };
 
 export default Bookings;

@@ -15,6 +15,11 @@ export const CREATE_BOOKING_REQUEST = `${store}/CREATE_BOOKING_REQUEST`
 export const CREATE_BOOKING_SUCCESS = `${store}/CREATE_BOOKING_SUCCESS`
 export const CREATE_BOOKING_ERROR = `${store}/CREATE_BOOKING_ERROR`
 
+export const DELETE_BOOKING = `${store}/DELETE_BOOKING`
+export const DELETE_BOOKING_REQUEST = `${store}/DELETE_BOOKING_REQUEST`
+export const DELETE_BOOKING_SUCCESS = `${store}/DELETE_BOOKING_SUCCESS`
+export const DELETE_BOOKING_ERROR = `${store}/DELETE_BOOKING_ERROR`
+
 
 export const OPEN_BOOKING_MODAL = `${store}/OPEN_BOOKING_MODAL`
 export const CLOSE_BOOKING_MODAL = `${store}/CLOSE_BOOKING_MODAL`
@@ -32,10 +37,24 @@ export default class DashboardAction {
         ERROR: FETCH_CATEGORY_OPTIONS_ERROR
     };
 
+
+    static DELETE_BOOKING = {
+        REQUEST: DELETE_BOOKING_REQUEST,
+        SUCCESS: DELETE_BOOKING_SUCCESS,
+        ERROR: DELETE_BOOKING_ERROR
+    };
+
     static createBooking(payload) {
         return {
             type: CREATE_BOOKING,
-            payload: payload
+            payload: { data: payload }
+        };
+    }
+
+    static deleteBooking(id) {
+        return {
+            type: DELETE_BOOKING,
+            payload: { id }
         };
     }
 

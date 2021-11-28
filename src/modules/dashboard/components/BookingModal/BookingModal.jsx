@@ -78,7 +78,11 @@ export default function BookingModal({ isOpen, closeModal, id, type }) {
   };
 
   const onSubmit = () => {
-    dispatch(DashboardAction.createBooking(initialValues));
+    if (!isEditModal(type)) dispatch(DashboardAction.createBooking(initialValues));
+  };
+
+  const onDelete = () => {
+    dispatch(DashboardAction.deleteBooking(id));
   };
 
   let bookingItem;
@@ -186,7 +190,7 @@ export default function BookingModal({ isOpen, closeModal, id, type }) {
               onSetDate
             )}
             {isEditModal(type) ? (
-              <ButtonStyled dangerText className="mt-10" w100 input>
+              <ButtonStyled onClick={onDelete} dangerText className="mt-10" w100 input>
                 Delete <DeleteOutlined />
               </ButtonStyled>
             ) : null}

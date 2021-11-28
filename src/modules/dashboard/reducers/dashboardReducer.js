@@ -70,6 +70,22 @@ const dashboardReducer = (state = initialState, { type, payload }) => {
                 ...state,
                 categoryOptions: payload.data
             }
+        case DashboardAction.DELETE_BOOKING.REQUEST:
+            return {
+                ...state,
+                bookings: {
+                    ...state.bookings,
+                    isFetching: true
+                }
+            }
+        case DashboardAction.DELETE_BOOKING.SUCCESS:
+            return {
+                ...state,
+                bookings: {
+                    ...state.bookings,
+                    isFetching: false,
+                }
+            }
         default:
             return state
     }

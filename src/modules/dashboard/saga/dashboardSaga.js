@@ -1,8 +1,11 @@
-import { all, call, put, takeLatest } from '@redux-saga/core/effects';
+import { all, call, fork, put, select, takeLatest } from '@redux-saga/core/effects';
 import { Message } from 'utils/Message';
 import { errorNotification, getError, successNotification } from 'utils/Notifcation';
 import { API } from 'apis/index';
-import DashboardAction, { FETCH_BOOKINGS, FETCH_CATEGORY_OPTIONS } from '../actions/dashboardAction';
+import DashboardAction, { CLOSE_BOOKING_MODAL, DELETE_BOOKING, FETCH_BOOKINGS, FETCH_CATEGORY_OPTIONS } from '../actions/dashboardAction';
+
+
+const getBookings = (state) => state.dashboard.bookings.data
 
 
 function* fetchListBookings({ payload }) {
@@ -39,8 +42,40 @@ function* fetchCategoryOptions() {
     }
 }
 
+
+function* deleteBooking({ payload }) {
+    try {
+        const bookingData = yield select(getBookings)
+        const { id } = payload
+        yield put({ type: DashboardAction.DELETE_BOOKING.REQUEST })
+        const { data: { message } } = yield call(API.bookingAPI.deleteBooking, id)
+
+        let newData = [...bookingData];
+        newData = newData.filter((item) => item.id !== id)
+
+        yield put({ type: CLOSE_BOOKING_MODAL })
+        yield put({ type: DashboardAction.DELETE_BOOKING.SUCCESS, payload: { data: newData } })
+
+        yield fork(fetchListBookings, { payload: { page: 1, perPage: 4 } })
+        successNotification(message)
+    } catch (error) {
+        errorNotification(getError(error));
+        yield put({
+            type: DashboardAction.DELETE_BOOKING.ERROR, payload: getError(error)
+        })
+    }
+}
+
+// function* fetchAndUpdateBookings() {
+//     yield fork(fetchListBookings, { payload: { page: 1, perPage: 4 } }{ payload: { page: 1, perPage: 4 } })
+// }
+
 function* watchFetchListBookings() {
     yield takeLatest(FETCH_BOOKINGS, fetchListBookings)
+}
+
+function* watchDeleteBooking() {
+    yield takeLatest(DELETE_BOOKING, deleteBooking)
 }
 
 function* watchFetchCategoryOptions() {
@@ -48,5 +83,5 @@ function* watchFetchCategoryOptions() {
 }
 
 export default function* dashboardSaga() {
-    yield all([watchFetchListBookings(), watchFetchCategoryOptions()])
+    yield all([watchFetchListBookings(), watchFetchCategoryOptions(), watchDeleteBooking()])
 }
