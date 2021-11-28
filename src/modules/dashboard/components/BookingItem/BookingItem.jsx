@@ -3,7 +3,7 @@ import DashboardAction from 'modules/dashboard/actions/dashboardAction';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { FlexDiv } from 'stylesheet/div/div.styled';
-import { TYPE_MODAL } from 'utils/ENUM';
+import { PROGRESS_STATUS, TYPE_MODAL } from 'utils/ENUM';
 import {
   BookingCardImage,
   BookingProgress,
@@ -11,12 +11,14 @@ import {
   BookingItemStyled
 } from './BookingItem.styled';
 
-export default function BookingItem({ id, title }) {
+export default function BookingItem({ id, title, status }) {
   const dispatch = useDispatch();
 
   const onOpenModal = () => {
     dispatch(DashboardAction.openBookingModal(id, TYPE_MODAL.edit));
   };
+
+  const progress = PROGRESS_STATUS(status);
 
   return (
     <Row onClick={onOpenModal}>
@@ -34,30 +36,23 @@ export default function BookingItem({ id, title }) {
                 </BookingCardImage>
                 <FlexDiv alignCenter className="body-course-draft">
                   <div className="d-flex align-items-center">
-                    {/* <div className="icon bg-primary-light rounded-circle w-60 h-60 text-center l-h-80">
-                <span className="font-size-30 icon-Bulb1">
-                  <span className="path1" />
-                  <span className="path2" />
-                  <span className="path3" />
-                  <span className="path4" />
-                </span>
-              </div> */}
                     <div className="ml-15">
                       <h5 className="mb-0">{title}</h5>
-                      {/* <div>{renderDraftPublish()}</div> */}
                     </div>
                   </div>
                 </FlexDiv>
               </FlexDiv>
               <BookingProgress className="body-course-draft">
-                <p className="text-fade font-size-12 mb-0">Waiting to confirm</p>
+                <p className="font-size-14 mb-0" style={{ color: `${progress.color}` }}>
+                  {progress.message}
+                </p>
 
                 <div className="courses--course-progress--C_Gvp udlite-meter-wrapper meter--meter-wrapper--R6ZCR">
                   <div
                     className="udlite-meter meter--meter--27-bB"
                     aria-label="0% complete"
                     data-purpose="meter"
-                    style={{ transform: 'scaleX(0.65)' }}
+                    style={{ transform: `scaleX(${progress.progress})` }}
                   />
                 </div>
               </BookingProgress>

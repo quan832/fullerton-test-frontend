@@ -15,4 +15,32 @@ export const STATUS = {
   reject: "REJECTED"
 };
 
+export const PROGRESS_STATUS = (status) => {
+  switch (status) {
+    case STATUS.pending:
+      return {
+        message: 'Waiting to confirm',
+        progress: 0.5,
+        color: '#ffc107'
+      }
+    case STATUS.approve:
+      return {
+        message: 'Approved',
+        progress: 1,
+        color: '#28a745'
+      }
+    case STATUS.reject:
+      return {
+        message: 'Rejected',
+        progress: 0,
+        color: '#f8f9fa'
+      }
+    default:
+      return {
+        message: '',
+        progress: 0
+      }
+  }
+}
+
 export const FORMAT_DATE = 'DD/MM/YYYY'

@@ -4,7 +4,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import BookingItem from '../BookingItem/BookingItem';
 
 const renderBookingItem = (data) => {
-  return data.map((item, index) => <BookingItem key={index} id={item.id} title={item.title} />);
+  return data.map((item, index) => (
+    <BookingItem key={index} status={item.status} id={item.id} title={item.title} />
+  ));
 };
 
 export default function BookingList() {
