@@ -37,6 +37,12 @@ export default class DashboardAction {
         ERROR: FETCH_CATEGORY_OPTIONS_ERROR
     };
 
+    static CREATE_BOOKING = {
+        REQUEST: CREATE_BOOKING_REQUEST,
+        SUCCESS: CREATE_BOOKING_SUCCESS,
+        ERROR: CREATE_BOOKING_ERROR
+    };
+
 
     static DELETE_BOOKING = {
         REQUEST: DELETE_BOOKING_REQUEST,

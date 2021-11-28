@@ -9,6 +9,8 @@ import moment from 'moment';
 import { FORMAT_DATE, STATUS, TYPE_MODAL } from 'utils/ENUM';
 import { ButtonStyled } from 'stylesheet/Button/Button.styled';
 import { DeleteOutlined } from '@ant-design/icons';
+import * as Yup from 'yup';
+import { TextSpan } from 'stylesheet/Text/Text.styled';
 
 const renderProposedDate = (date, isDisabled, setValue) => {
   return date.map((item, index) => {
@@ -23,14 +25,13 @@ const renderProposedDate = (date, isDisabled, setValue) => {
             <>
               <LabelStyled>Proposed Date {index + 1}</LabelStyled>
               <DatePickerAntd
-                {...field}
                 name={`date[${index}]`}
                 id={`date[${index}]`}
                 small
                 onChange={!isDisabled ? (date, dateString) => setValue(dateString, index) : null}
                 disabled={isDisabled}
                 format={FORMAT_DATE}
-                value={moment(defaultValue, FORMAT_DATE)}
+                defaultValue={moment(defaultValue, FORMAT_DATE)}
               />
             </>
           )}
@@ -49,36 +50,50 @@ const getDateNow = () => {
   return value;
 };
 
+const BookingSchema = Yup.object().shape({
+  title: Yup.string().required('Title is required'),
+  place: Yup.string().required('Place is required'),
+  category: Yup.string().required('Category is required')
+});
+
 export default function BookingModal({ isOpen, closeModal, id, type }) {
   const dispatch = useDispatch();
 
   const {
     categoryOptions,
-    bookings: { data }
+    bookings: { data },
+    bookingModal: { isOpenModal }
   } = useSelector((state) => state.dashboard);
 
-  const [initialValues, setValues] = useState({
+  const initialValue = {
     title: '',
     place: '',
     status: STATUS.pending,
     date: [getDateNow(), getDateNow(), getDateNow()],
     category: categoryOptions[0]?.title
-  });
+  };
+
+  const [initialValues, setValues] = useState(initialValue);
 
   React.useEffect(() => {
     setValues({ ...initialValues, category: categoryOptions[0]?.title });
   }, [categoryOptions]);
+
+  React.useEffect(() => {
+    setValues({ ...initialValue });
+  }, [isOpenModal]);
 
   const formRef = useRef(null);
 
   const onSetDate = (value, index) => {
     const newDate = [...initialValues.date];
     newDate[index] = value;
-    setValues({ date: newDate });
+    setValues({ ...initialValues, date: newDate });
   };
 
   const onSubmit = () => {
     if (!isEditModal(type)) dispatch(DashboardAction.createBooking(initialValues));
+    setValues({ ...initialValue });
   };
 
   const onDelete = () => {
@@ -108,10 +123,10 @@ export default function BookingModal({ isOpen, closeModal, id, type }) {
       <Formik
         initialValues={initialValues}
         onSubmit={(values, { resetForm }) => {
-          console.log(values);
           resetForm();
         }}
-        innerRef={formRef}>
+        innerRef={formRef}
+        validationSchema={BookingSchema}>
         {({ handleSubmit, handleBlur }) => (
           <Form onSubmit={handleSubmit}>
             <FormGroup>

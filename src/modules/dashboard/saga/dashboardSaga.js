@@ -2,7 +2,7 @@ import { all, call, fork, put, select, takeLatest } from '@redux-saga/core/effec
 import { Message } from 'utils/Message';
 import { errorNotification, getError, successNotification } from 'utils/Notifcation';
 import { API } from 'apis/index';
-import DashboardAction, { CLOSE_BOOKING_MODAL, DELETE_BOOKING, FETCH_BOOKINGS, FETCH_CATEGORY_OPTIONS } from '../actions/dashboardAction';
+import DashboardAction, { CLOSE_BOOKING_MODAL, CREATE_BOOKING, DELETE_BOOKING, FETCH_BOOKINGS, FETCH_CATEGORY_OPTIONS } from '../actions/dashboardAction';
 
 
 const getBookings = (state) => state.dashboard.bookings.data
@@ -66,12 +66,40 @@ function* deleteBooking({ payload }) {
     }
 }
 
+function* createNewBooking({ payload }) {
+    try {
+        const { data } = payload; 
+        const bookingData = yield select(getBookings)
+        yield put({ type: DashboardAction.CREATE_BOOKING.REQUEST })
+
+        const { data: { message } } = yield call(API.bookingAPI.createBooking, payload)
+
+        let newData = [...bookingData];
+        newData = newData.push(data)
+
+        yield put({ type: CLOSE_BOOKING_MODAL })
+        yield put({ type: DashboardAction.CREATE_BOOKING.SUCCESS, payload: { data: newData } })
+
+        yield fork(fetchListBookings, { payload: { page: 1, perPage: 4 } })
+        successNotification(message)
+    } catch (error) {
+        errorNotification(getError(error));
+        yield put({
+            type: DashboardAction.CREATE_BOOKING.ERROR, payload: getError(error)
+        })
+    }
+}
+
 // function* fetchAndUpdateBookings() {
 //     yield fork(fetchListBookings, { payload: { page: 1, perPage: 4 } }{ payload: { page: 1, perPage: 4 } })
 // }
 
 function* watchFetchListBookings() {
     yield takeLatest(FETCH_BOOKINGS, fetchListBookings)
+}
+
+function* watchCreateBooking() {
+    yield takeLatest(CREATE_BOOKING, createNewBooking)
 }
 
 function* watchDeleteBooking() {
@@ -83,5 +111,5 @@ function* watchFetchCategoryOptions() {
 }
 
 export default function* dashboardSaga() {
-    yield all([watchFetchListBookings(), watchFetchCategoryOptions(), watchDeleteBooking()])
+    yield all([watchFetchListBookings(), watchFetchCategoryOptions(), watchDeleteBooking(),watchCreateBooking()])
 }
