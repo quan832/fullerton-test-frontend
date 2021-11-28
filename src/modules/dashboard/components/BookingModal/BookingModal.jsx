@@ -1,37 +1,36 @@
 import { Modal, Row, Col, DatePicker } from 'antd';
 import SelectInput from 'components/SelectInput/SelectInput';
-import { Field, Form, Formik } from 'formik';
-import React from 'react';
+import { Field, Form, Formik, useFormikContext } from 'formik';
+import React, { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { DatePickerAntd, FormGroup, InputAntd, LabelStyled } from 'stylesheet/Input/Input.styled';
 import DashboardAction from './../../actions/dashboardAction';
 import moment from 'moment';
-import { FORMAT_DATE, TYPE_MODAL } from 'utils/ENUM';
+import { FORMAT_DATE, STATUS, TYPE_MODAL } from 'utils/ENUM';
 import { ButtonStyled } from 'stylesheet/Button/Button.styled';
 import { DeleteOutlined } from '@ant-design/icons';
 
-const defaultDate = [
-  { startDate: '', isConfirm: false },
-  { startDate: '', isConfirm: false },
-  { startDate: '', isConfirm: false }
-];
-
-const renderProposedDate = (date, isDisabled) => {
+const renderProposedDate = (date, isDisabled, setValue) => {
   return date.map((item, index) => {
-    let defaultValue = isDisabled ? moment(item.startDate).format(FORMAT_DATE) : null;
+    let defaultValue = isDisabled
+      ? moment(item.startDate).format(FORMAT_DATE)
+      : moment().format(FORMAT_DATE);
+
     return (
-      <FormGroup key={index}>
-        <Field name="email">
+      <FormGroup key={`${index}-${isDisabled}`}>
+        <Field name={`date[${index}]`}>
           {({ field, form: { touched, errors } }) => (
             <>
               <LabelStyled>Proposed Date {index + 1}</LabelStyled>
               <DatePickerAntd
-                name="title"
-                id="title"
+                {...field}
+                name={`date[${index}]`}
+                id={`date[${index}]`}
                 small
+                onChange={!isDisabled ? (date, dateString) => setValue(dateString, index) : null}
                 disabled={isDisabled}
                 format={FORMAT_DATE}
-                defaultValue={isDisabled ? moment(defaultValue, FORMAT_DATE) : null}
+                value={moment(defaultValue, FORMAT_DATE)}
               />
             </>
           )}
@@ -45,15 +44,42 @@ const isEditModal = (type) => {
   return type === TYPE_MODAL.edit ? true : false;
 };
 
+const getDateNow = () => {
+  const value = moment().format(FORMAT_DATE);
+  return value;
+};
+
 export default function BookingModal({ isOpen, closeModal, id, type }) {
   const dispatch = useDispatch();
-
-  const disable = type === TYPE_MODAL.edit ? true : false;
 
   const {
     categoryOptions,
     bookings: { data }
   } = useSelector((state) => state.dashboard);
+
+  const [initialValues, setValues] = useState({
+    title: '',
+    place: '',
+    status: STATUS.pending,
+    date: [getDateNow(), getDateNow(), getDateNow()],
+    category: categoryOptions[0]?.title
+  });
+
+  React.useEffect(() => {
+    setValues({ ...initialValues, category: categoryOptions[0]?.title });
+  }, [categoryOptions]);
+
+  const formRef = useRef(null);
+
+  const onSetDate = (value, index) => {
+    const newDate = [...initialValues.date];
+    newDate[index] = value;
+    setValues({ date: newDate });
+  };
+
+  const onSubmit = () => {
+    dispatch(DashboardAction.createBooking(initialValues));
+  };
 
   let bookingItem;
   if (id) {
@@ -69,17 +95,23 @@ export default function BookingModal({ isOpen, closeModal, id, type }) {
   }, []);
 
   return (
-    <Modal title={`${type} Booking Modal`} width={850} visible={isOpen} onCancel={closeModal}>
+    <Modal
+      title={`${type} Booking Modal`}
+      width={850}
+      visible={isOpen}
+      onCancel={closeModal}
+      onOk={onSubmit}>
       <Formik
-        initialValues={{ title: '', place: '', status: '', date: [], category: '' }}
+        initialValues={initialValues}
         onSubmit={(values, { resetForm }) => {
           console.log(values);
           resetForm();
-        }}>
-        {({ handleSubmit }) => (
+        }}
+        innerRef={formRef}>
+        {({ handleSubmit, handleBlur }) => (
           <Form onSubmit={handleSubmit}>
             <FormGroup>
-              <Field name="email">
+              <Field name="title">
                 {({ field, form: { touched, errors } }) => (
                   <>
                     <LabelStyled>Title</LabelStyled>
@@ -88,8 +120,13 @@ export default function BookingModal({ isOpen, closeModal, id, type }) {
                       id="title"
                       small
                       {...field}
-                      value={isEditModal(type) ? bookingItem.title : null}
+                      value={isEditModal(type) ? bookingItem.title : initialValues.title}
                       disabled={isEditModal(type)}
+                      onBlur={handleBlur}
+                      onChange={(e) => {
+                        const value = e.currentTarget.value;
+                        setValues({ ...initialValues, title: value });
+                      }}
                     />
                   </>
                 )}
@@ -98,7 +135,7 @@ export default function BookingModal({ isOpen, closeModal, id, type }) {
             <Row>
               <Col span={12} style={{ paddingRight: '25px' }}>
                 <FormGroup>
-                  <Field name="email">
+                  <Field name="place">
                     {({ field, form: { touched, errors } }) => (
                       <>
                         <LabelStyled>Place</LabelStyled>
@@ -108,7 +145,13 @@ export default function BookingModal({ isOpen, closeModal, id, type }) {
                           small
                           disabled={isEditModal(type)}
                           {...field}
-                          value={isEditModal(type) ? bookingItem.place : null}
+                          value={isEditModal(type) ? bookingItem.place : initialValues.place}
+                          onChange={(e) => {
+                            console.log(e);
+                            const value = e.currentTarget.value;
+                            setValues({ ...initialValues, place: value });
+                          }}
+                          onBlur={handleBlur}
                         />
                       </>
                     )}
@@ -117,7 +160,7 @@ export default function BookingModal({ isOpen, closeModal, id, type }) {
               </Col>
               <Col span={12}>
                 <FormGroup>
-                  <Field name="email">
+                  <Field name="category">
                     {({ field, form: { touched, errors } }) => (
                       <>
                         <LabelStyled>Category</LabelStyled>
@@ -128,6 +171,7 @@ export default function BookingModal({ isOpen, closeModal, id, type }) {
                           id="category"
                           disabled={isEditModal(type)}
                           small
+                          onBlur={handleBlur}
                           {...field}
                         />
                       </>
@@ -136,7 +180,11 @@ export default function BookingModal({ isOpen, closeModal, id, type }) {
                 </FormGroup>
               </Col>
             </Row>
-            {renderProposedDate(type === TYPE_MODAL.edit ? bookingItem.date : defaultDate, disable)}
+            {renderProposedDate(
+              isEditModal(type) ? bookingItem.date : defaultDate,
+              isEditModal(type),
+              onSetDate
+            )}
             {isEditModal(type) ? (
               <ButtonStyled dangerText className="mt-10" w100 input>
                 Delete <DeleteOutlined />

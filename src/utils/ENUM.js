@@ -9,4 +9,10 @@ export const TYPE_MODAL = {
   add: 'Add'
 }
 
+export const STATUS = {
+  pending: "PENDING",
+  approve: "APPROVE",
+  reject: "REJECTED"
+};
+
 export const FORMAT_DATE = 'DD/MM/YYYY'

@@ -10,6 +10,12 @@ export const FETCH_CATEGORY_OPTIONS_REQUEST = `${store}/FETCH_CATEGORY_OPTIONS_R
 export const FETCH_CATEGORY_OPTIONS_SUCCESS = `${store}/FETCH_CATEGORY_OPTIONS_SUCCESS`
 export const FETCH_CATEGORY_OPTIONS_ERROR = `${store}/FETCH_CATEGORY_OPTIONS_ERROR`
 
+export const CREATE_BOOKING = `${store}/CREATE_BOOKING`
+export const CREATE_BOOKING_REQUEST = `${store}/CREATE_BOOKING_REQUEST`
+export const CREATE_BOOKING_SUCCESS = `${store}/CREATE_BOOKING_SUCCESS`
+export const CREATE_BOOKING_ERROR = `${store}/CREATE_BOOKING_ERROR`
+
+
 export const OPEN_BOOKING_MODAL = `${store}/OPEN_BOOKING_MODAL`
 export const CLOSE_BOOKING_MODAL = `${store}/CLOSE_BOOKING_MODAL`
 
@@ -25,6 +31,13 @@ export default class DashboardAction {
         SUCCESS: FETCH_CATEGORY_OPTIONS_SUCCESS,
         ERROR: FETCH_CATEGORY_OPTIONS_ERROR
     };
+
+    static createBooking(payload) {
+        return {
+            type: CREATE_BOOKING,
+            payload: payload
+        };
+    }
 
     static fetchBookings(payload) {
         return {
