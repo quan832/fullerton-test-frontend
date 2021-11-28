@@ -181,7 +181,7 @@ export default function BookingModal({ isOpen, closeModal, id, type }) {
               </Col>
             </Row>
             {renderProposedDate(
-              isEditModal(type) ? bookingItem.date : defaultDate,
+              isEditModal(type) ? bookingItem.date : initialValues.date,
               isEditModal(type),
               onSetDate
             )}
