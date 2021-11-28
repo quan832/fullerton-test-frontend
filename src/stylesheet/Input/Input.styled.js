@@ -6,6 +6,49 @@ export const FormGroup = styled.div`
   position: relative;
 `;
 
+export const LabelStyled = styled.label`
+  display: inline-block;
+  max-width: 100%;
+  margin-bottom: 5px;
+  font-weight: 500;
+  font-size: 15px;
+
+  ${(props) =>
+    props.fontSmall &&
+    css`
+      font-size: 13px;
+    `}
+`;
+export const SelectInputStyled = styled.div`
+  .ant-select {
+    border: 0.0625rem solid #dfe3e9 !important;
+    border-radius: 0.1875rem !important;
+    background-color: #fff !important;
+    display: block !important;
+    font-size: 0.875rem !important;
+    height: 35px !important;
+    padding: 0 0.5rem !important;
+    transition: border-color 0.2s ease-in-out !important;
+    width: 100% !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    &:hover,
+    &:focus,
+    &:active {
+      border-color: #12c88a !important;
+    }
+  }
+
+  .ant-select-selector {
+    height: 100% !important;
+  }
+
+  .ant-select-selection-item {
+    display: flex;
+    align-items: center;
+  }
+`;
+
 export const InputAntd = styled(Input)`
   &:hover,
   &:focus,
@@ -33,6 +76,12 @@ export const InputAntd = styled(Input)`
       &:active {
         border-color: #f85359 !important;
       }
+    `}
+
+  ${(props) =>
+    props.small &&
+    css`
+      height: 35px;
     `}
 `;
 

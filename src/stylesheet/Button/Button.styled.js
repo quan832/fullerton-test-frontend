@@ -25,7 +25,7 @@ export const ButtonStyled = styled.button`
   ${(props) =>
     props.purple &&
     css`
-      background: #2c275f;
+      background: #a435f0;
       color: #fff;
       font-weight: 700;
 

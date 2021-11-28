@@ -1,5 +1,7 @@
 import { Row, Col } from 'antd';
+import DashboardAction from 'modules/dashboard/actions/dashboardAction';
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { FlexDiv } from 'stylesheet/div/div.styled';
 import {
   BookingCardImage,
@@ -9,8 +11,14 @@ import {
 } from './BookingItem.styled';
 
 export default function BookingItem({ title }) {
+  const dispatch = useDispatch();
+
+  const onOpenModal = () => {
+    dispatch(DashboardAction.openBookingModal());
+  };
+
   return (
-    <Row>
+    <Row onClick={onOpenModal}>
       <Col span={24}>
         <BookingItemStyled flex>
           <div className="box">

@@ -1,6 +1,8 @@
-const { default: DashboardAction } = require("../actions/dashboardAction");
+const { default: DashboardAction, OPEN_BOOKING_MODAL, CLOSE_BOOKING_MODAL } = require("../actions/dashboardAction");
 
 const initialState = {
+    isOpenModal: false,
+    categoryOptions: [],
     bookings: {
         data: [],
         total: null,
@@ -11,6 +13,16 @@ const initialState = {
 
 const dashboardReducer = (state = initialState, { type, payload }) => {
     switch (type) {
+        case OPEN_BOOKING_MODAL:
+            return {
+                ...state,
+                isOpenModal: true,
+            }
+        case CLOSE_BOOKING_MODAL:
+            return {
+                ...state,
+                isOpenModal: false,
+            }
         case DashboardAction.FETCH_BOOKINGS.REQUEST:
             return {
                 ...state,
@@ -38,6 +50,11 @@ const dashboardReducer = (state = initialState, { type, payload }) => {
                     isFetching: false,
                     error: payload
                 }
+            }
+        case DashboardAction.FETCH_CATEGORY_OPTIONS.SUCCESS:
+            return {
+                ...state,
+                categoryOptions: payload.data
             }
         default:
             return state

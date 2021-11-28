@@ -7,11 +7,22 @@ import { FlexDiv } from 'stylesheet/div/div.styled';
 import { useDispatch, useSelector } from 'react-redux';
 import DashboardAction from '../actions/dashboardAction';
 import { Spin } from 'antd';
+import { ButtonStyled } from 'stylesheet/Button/Button.styled';
+import BookingModal from '../components/BookingModal/BookingModal';
 
 const { TabPane } = Tabs;
 
+const renderAddBooking = () => {
+  return <ButtonStyled purple>Add Booking</ButtonStyled>;
+};
+
 export default function DashboardContainer() {
   const { total, page, isFetching } = useSelector((state) => state.dashboard.bookings);
+  const { isOpenModal } = useSelector((state) => state.dashboard);
+
+  const onCloseModal = () => {
+    dispatch(DashboardAction.closeBookingModal());
+  };
 
   const dispatch = useDispatch();
 
@@ -23,7 +34,7 @@ export default function DashboardContainer() {
     <DashboardContainerStyled>
       <Header />
       <div className="mt-20 pl-5">
-        <Tabs defaultActiveKey="1">
+        <Tabs defaultActiveKey="1" tabBarExtraContent={renderAddBooking()}>
           <TabPane tab="Upcoming" key="1" style={{ height: '100%' }}>
             <Spin spinning={isFetching}>
               <BookingList />
@@ -45,6 +56,7 @@ export default function DashboardContainer() {
           />
         </FlexDiv>
       </DashboardLastChild>
+      <BookingModal isOpen={isOpenModal} closeModal={onCloseModal} />
     </DashboardContainerStyled>
   );
 }

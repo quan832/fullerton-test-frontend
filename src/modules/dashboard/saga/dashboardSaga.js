@@ -2,7 +2,7 @@ import { all, call, put, takeLatest } from '@redux-saga/core/effects';
 import { Message } from 'utils/Message';
 import { errorNotification, getError, successNotification } from 'utils/Notifcation';
 import { API } from 'apis/index';
-import DashboardAction, { FETCH_BOOKINGS } from '../actions/dashboardAction';
+import DashboardAction, { FETCH_BOOKINGS, FETCH_CATEGORY_OPTIONS } from '../actions/dashboardAction';
 
 
 function* fetchListBookings({ payload }) {
@@ -24,10 +24,29 @@ function* fetchListBookings({ payload }) {
     }
 }
 
+function* fetchCategoryOptions() {
+    try {
+        yield put({ type: DashboardAction.FETCH_CATEGORY_OPTIONS.REQUEST })
+        const { data } = yield call(API.categoriesAPI.fetchCategoryOptions)
+        yield put({
+            type: DashboardAction.FETCH_CATEGORY_OPTIONS.SUCCESS, payload: { data }
+        })
+    } catch (error) {
+        errorNotification(getError(error));
+        yield put({
+            type: DashboardAction.FETCH_CATEGORY_OPTIONS.ERROR, payload: getError(error)
+        })
+    }
+}
+
 function* watchFetchListBookings() {
     yield takeLatest(FETCH_BOOKINGS, fetchListBookings)
 }
 
+function* watchFetchCategoryOptions() {
+    yield takeLatest(FETCH_CATEGORY_OPTIONS, fetchCategoryOptions)
+}
+
 export default function* dashboardSaga() {
-    yield all([watchFetchListBookings()])
+    yield all([watchFetchListBookings(), watchFetchCategoryOptions()])
 }
