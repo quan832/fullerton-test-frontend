@@ -43,7 +43,7 @@ export default function DashboardContainer() {
 
   return (
     <DashboardContainerStyled>
-      <Header />
+      <Header title="Bookings" />
       <div className="mt-20 pl-5">
         <Tabs defaultActiveKey="1" tabBarExtraContent={renderAddBooking(onOpenAddModal)}>
           <TabPane tab="Upcoming" key="1" style={{ height: '100%' }}>

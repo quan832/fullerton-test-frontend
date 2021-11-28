@@ -14,7 +14,6 @@ export const DashboardContainerStyled = styled.div`
 
 export const DashboardLastChild = styled.div`
   position: absolute;
-  bottom: 0;
+  bottom: 0px;
   right: 0;
-  margin-right: 64px;
 `;

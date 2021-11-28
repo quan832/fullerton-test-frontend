@@ -8,4 +8,5 @@ export const PrivateContainer = styled.div`
   justify-content: center;
   background: #fff;
   height: 100%;
+  overflow-y: auto;
 `;
