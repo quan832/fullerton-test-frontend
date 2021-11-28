@@ -1,6 +1,7 @@
 import { all, call, put, takeLatest } from '@redux-saga/core/effects';
 import { history } from 'App/App';
 import { Message } from 'utils/Message';
+import jwtDecode from "jwt-decode"
 import { errorNotification, getError, successNotification } from 'utils/Notifcation';
 import { LOGIN_USER, LOGOUT_USER } from '../actions/authAction';
 import LoginAction from '../actions/authAction';
@@ -28,6 +29,22 @@ function removeAccessToken() {
   const loggedIn = 'false';
   localStorage.setItem('logged-in', loggedIn);
   sessionStorage.setItem('logged-in', loggedIn);
+}
+
+export function getUserInfo() {
+  const token = getAccessToken()
+  if (token) {
+    try {
+      const decodedToken = jwtDecode(token)
+      if (decodedToken && decodedToken.data) {
+        return decodedToken.data
+      }
+    } catch (error) {
+      removeAccessToken()
+      return {}
+    }
+  }
+  return {}
 }
 
 export function getAccessToken() {

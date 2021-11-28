@@ -5,47 +5,45 @@ import { Route, Redirect } from 'react-router-dom';
 
 import { LayoutStyled } from 'stylesheet/Layout/Layout.styled';
 import { USER } from 'utils/ENUM';
-import { PrivateContainer } from './PrivateTemplate.styled';
+import { PrivateContainer } from '../Private/PrivateTemplate.styled';
 
 const privateUser = (isAuthenticated) => {
   return isAuthenticated ? true : false;
 };
 
-
-
-const PrivateTemplate = function (props) {
+const AdminTemplate = function (props) {
   const { Component, ...restRoute } = props;
   const {
     isAuthenticated,
     user: { type }
   } = useSelector((state) => state.auth);
 
-const renderPrivateComponent = (type, propsRoute) => {
-  switch (type) {
-    case USER.admin:
-      return <Redirect to="/admin" />;
-    case USER.user:
-      return (
-        <LayoutStyled className="site-layout">
-          <LeftMenu />
+  const renderAdminComponent = (type, propsRoute) => {
+    switch (type) {
+      case USER.user:
+        return <Redirect to="/" />;
+      case USER.admin:
+        return (
           <LayoutStyled className="site-layout">
-            <PrivateContainer>
-              <Component {...propsRoute} />
-            </PrivateContainer>
+            <LeftMenu />
+            <LayoutStyled className="site-layout">
+              <PrivateContainer>
+                <Component {...propsRoute} />
+              </PrivateContainer>
+            </LayoutStyled>
           </LayoutStyled>
-        </LayoutStyled>
-      );
-    default:
-      return <>Errror</>;
-  }
-};
+        );
+      default:
+        return <>Error</>;
+    }
+  };
 
   return (
     <Route
       {...restRoute}
       render={(propsRoute) => {
         return privateUser(isAuthenticated) ? (
-          renderPrivateComponent(type, propsRoute)
+          renderAdminComponent(type, propsRoute)
         ) : (
           <Redirect to="/login" />
         );
@@ -54,4 +52,4 @@ const renderPrivateComponent = (type, propsRoute) => {
   );
 };
 
-export default PrivateTemplate;
+export default AdminTemplate;

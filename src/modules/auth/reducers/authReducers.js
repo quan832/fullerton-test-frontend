@@ -1,9 +1,11 @@
 import LoginAction, { LOGOUT_USER } from '../actions/authAction';
 import { checkAuthenticate } from '../saga/authSaga.js';
+import { getUserInfo } from './../saga/authSaga';
 
 const initialState = {
   isAuthenticated: checkAuthenticate(),
-  isFetching: false
+  isFetching: false,
+  user: getUserInfo()
 };
 
 function authentication(state = initialState, { type, payload }) {
@@ -20,6 +22,7 @@ function authentication(state = initialState, { type, payload }) {
         ...state,
         isFetching: false,
         isAuthenticated: true,
+        user: getUserInfo(),
         error: ''
       };
     case LoginAction.LOGIN_USER.ERROR:
@@ -32,6 +35,7 @@ function authentication(state = initialState, { type, payload }) {
     case LOGOUT_USER:
       return {
         ...state,
+        user: null,
         isAuthenticated: false
       };
     // case actionLogout.LOGOUT_USER.SUCCESS:

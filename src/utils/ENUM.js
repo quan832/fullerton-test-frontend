@@ -9,6 +9,11 @@ export const TYPE_MODAL = {
   add: 'Add'
 }
 
+export const USER = {
+  admin: 'ADMIN',
+  user: 'USER'
+}
+
 export const STATUS = {
   pending: "PENDING",
   approve: "APPROVE",

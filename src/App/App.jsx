@@ -8,6 +8,7 @@ import { routes } from 'routes/routes.js';
 
 import PrivateTemplate from 'template/Private/PrivateTemplate.jsx';
 import LoginTemplate from 'template/Login/LoginTemplate.jsx';
+import AdminTemplate from 'template/Admin/AdminTemplate.jsx';
 
 export const history = createBrowserHistory();
 
@@ -19,6 +20,10 @@ const Components = [
   {
     Component: LoginTemplate,
     routes: routes.routesAuth
+  },
+  {
+    Component: AdminTemplate,
+    routes: routes.routesAdmin
   }
 ];
 
