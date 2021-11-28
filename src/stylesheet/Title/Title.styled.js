@@ -23,7 +23,7 @@ export const PrimaryTitle = styled.h1`
   ${(props) =>
     props.large &&
     css`
-      font-size: 3rem;
+      font-size: 2.5rem;
     `}
 `;
 
