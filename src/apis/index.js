@@ -7,6 +7,7 @@ import accountAPI from './auth/auth';
 import bookingAPI from './bookings/bookings';
 import categoriesAPI from './categories/categories';
 import feedbackAPI from './feedback/feedback';
+import { handleLogout } from 'routes/routes';
 
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
@@ -14,6 +15,8 @@ axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded
 axios.create({
   paramsSerializer: (params) => qs.stringify(params, { arrayFormat: 'repeat' })
 });
+
+// set url
 axios.interceptors.request.use((_config) => {
   //   if (loggedIn() && !checkAuthenticate()) {
   //     return handleLogout()
@@ -43,6 +46,73 @@ axios.interceptors.request.use((_config) => {
 
   return config;
 });
+
+// for multiple requests
+let isRefreshing = false;
+let failedQueue = [];
+
+const processQueue = (error, token = null) => {
+  failedQueue.forEach((promise) => {
+    if (error) {
+      promise.reject(error);
+    } else {
+      promise.resolve(token);
+    }
+  });
+
+  failedQueue = [];
+};
+
+// refresh token
+axios.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+    const UNAUTHORIZED = 401;
+
+    if (error && error.response && error.response.status === UNAUTHORIZED) {
+      if (isRefreshing) {
+        return new Promise((resolve, reject) => {
+          failedQueue.push({ resolve, reject });
+        })
+          .then((token) => {
+            originalRequest.headers.Authorization = `Bearer ${token}`;
+            return HttpClient.request(originalRequest);
+          })
+          .catch((err) => {
+            return Promise.reject(err);
+          });
+      }
+
+      isRefreshing = true;
+      const refresh = localStorage.getItem('refresh_token');
+      const token = localStorage.getItem('access_token') || sessionStorage.getItem('access_token');
+
+      return new Promise((resolve, reject) => {
+        accountAPI
+          .refreshToken(token, refresh)
+          .then(({ data }) => {
+            localStorage.setItem('access_token', data.token);
+            localStorage.setItem('refresh_token', data.refreshtoken);
+            HttpClient.defaults.headers.common.Authorization = `Bearer ${data.token}`;
+            originalRequest.headers.Authorization = `Bearer ${data.token}`;
+            processQueue(null, data.token);
+            resolve(HttpClient(originalRequest));
+          })
+          .catch((err) => {
+            processQueue(err, null);
+            reject(err);
+            handleLogout();
+          })
+          .finally(() => {
+            isRefreshing = false;
+          });
+      });
+    }
+
+    return Promise.reject(error);
+  }
+);
 
 export function getErrorMessage(error) {
   const { response } = error;

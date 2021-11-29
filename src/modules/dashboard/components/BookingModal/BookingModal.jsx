@@ -10,6 +10,28 @@ import { FORMAT_DATE, STATUS, TYPE_MODAL } from 'utils/ENUM';
 import { ButtonStyled } from 'stylesheet/Button/Button.styled';
 import { DeleteOutlined } from '@ant-design/icons';
 import * as Yup from 'yup';
+import { Tag } from 'antd';
+
+import { CheckCircleOutlined, MinusCircleOutlined } from '@ant-design/icons';
+
+const renderStatus = (isConfirm) => {
+  switch (isConfirm) {
+    case true:
+      return (
+        <Tag className="ml-10" icon={<CheckCircleOutlined />} color="success">
+          Approved
+        </Tag>
+      );
+    case false:
+      return (
+        <Tag className="ml-10" icon={<MinusCircleOutlined />} color="default">
+          Rejected
+        </Tag>
+      );
+    default:
+      return null;
+  }
+};
 
 const renderProposedDate = (date, isDisabled, setValue) => {
   return date.map((item, index) => {
@@ -22,7 +44,10 @@ const renderProposedDate = (date, isDisabled, setValue) => {
         <Field name={`date[${index}]`}>
           {({ field, form: { touched, errors } }) => (
             <>
-              <LabelStyled>Proposed Date {index + 1}</LabelStyled>
+              <LabelStyled>
+                Proposed Date {index + 1}
+                {isDisabled ? renderStatus(item.isConfirm) : null}
+              </LabelStyled>
               <DatePickerAntd
                 name={`date[${index}]`}
                 id={`date[${index}]`}

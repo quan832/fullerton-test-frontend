@@ -18,9 +18,10 @@ export default class LoginAction {
     };
   }
 
-  static logoutUser() {
+  static logoutUser(payload) {
     return {
-      type: LOGOUT_USER
+      type: LOGOUT_USER,
+      payload: payload
     };
   }
 }

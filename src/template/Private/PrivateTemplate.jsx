@@ -11,34 +11,34 @@ const privateUser = (isAuthenticated) => {
   return isAuthenticated ? true : false;
 };
 
-
-
 const PrivateTemplate = function (props) {
   const { Component, ...restRoute } = props;
-  const {
-    isAuthenticated,
-    user: { type }
-  } = useSelector((state) => state.auth);
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
 
-const renderPrivateComponent = (type, propsRoute) => {
-  switch (type) {
-    case USER.admin:
-      return <Redirect to="/admin" />;
-    case USER.user:
-      return (
-        <LayoutStyled className="site-layout">
-          <LeftMenu />
-          <LayoutStyled className="site-layout">
-            <PrivateContainer>
-              <Component {...propsRoute} />
-            </PrivateContainer>
-          </LayoutStyled>
-        </LayoutStyled>
-      );
-    default:
-      return <>Errror</>;
+  let type = null;
+  if (user) {
+    type = user.type;
   }
-};
+
+  const renderPrivateComponent = (type = null, propsRoute) => {
+    switch (type) {
+      case USER.admin:
+        return <Redirect to="/admin" />;
+      case USER.user:
+        return (
+          <LayoutStyled className="site-layout">
+            <LeftMenu />
+            <LayoutStyled className="site-layout">
+              <PrivateContainer>
+                <Component {...propsRoute} />
+              </PrivateContainer>
+            </LayoutStyled>
+          </LayoutStyled>
+        );
+      default:
+        return <Redirect to="/login" />;
+    }
+  };
 
   return (
     <Route

@@ -4,8 +4,18 @@ const loginUser = (user) => {
   return axios.post(`/login`, user);
 };
 
+const refreshToken = (accessToken, refreshToken) => {
+  const data = {
+    accessToken,
+    refreshToken
+  };
+
+  return axios.post(`/refresh-token`, data);
+};
+
 const Account = {
-  loginUser
+  loginUser,
+  refreshToken
 };
 
 export default Account;

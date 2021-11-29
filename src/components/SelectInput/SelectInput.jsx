@@ -1,6 +1,6 @@
 import React from 'react';
-import { Select } from 'antd';
-import { SelectInputStyled } from 'stylesheet/Input/Input.styled';
+import { Divider, Select } from 'antd';
+import { InputAntd, SelectInputStyled } from 'stylesheet/Input/Input.styled';
 
 const { Option } = Select;
 
@@ -33,6 +33,15 @@ export default function SelectInput({ defaultValue, options, disabled }) {
         filterOption={(input, option) =>
           option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
         }
+        dropdownRender={(menu) => (
+          <div>
+            {menu}
+            <Divider style={{ margin: '4px 0' }} />
+            <div style={{ display: 'flex', flexWrap: 'nowrap', padding: 8 }}>
+              <InputAntd small />
+            </div>
+          </div>
+        )}
         filterSort={(optionA, optionB) =>
           optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
         }>
