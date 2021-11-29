@@ -11,7 +11,7 @@ import {
   BookingItemStyled
 } from './BookingItem.styled';
 
-export default function BookingItem({ id, title, status }) {
+export default function BookingItem({ id, title, status, subTitle }) {
   const dispatch = useDispatch();
 
   const onOpenModal = () => {
@@ -38,6 +38,9 @@ export default function BookingItem({ id, title, status }) {
                   <div className="d-flex align-items-center">
                     <div className="ml-15">
                       <h5 className="mb-0">{title}</h5>
+                      <p className="font-size-12 mb-0">
+                        <span className="font-weight-500">{subTitle}</span>{' '}
+                      </p>
                     </div>
                   </div>
                 </FlexDiv>

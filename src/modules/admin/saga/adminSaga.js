@@ -9,6 +9,8 @@ import AdminAction, {
 } from '../actions/adminAction';
 import { STATUS } from 'utils/ENUM';
 
+const getListBookingAdmin = (state) => state.admin.data;
+
 function* fetchListBookings({ payload }) {
   try {
     const { page = 1, perPage = 8 } = payload;
@@ -34,13 +36,25 @@ function* fetchListBookings({ payload }) {
 function* createFeedback(id, description) {
   try {
     yield put({ type: AdminAction.CREATE_FEEDBACK.REQUEST });
-
+    const data = yield select(getListBookingAdmin);
     const {
       data: { message }
     } = yield call(API.feedbackAPI.createFeedback, id, description);
 
+    let newData = [...data];
+    newData = newData.map((item) => {
+      if (item.id === id) {
+        console.log(description);
+        return { ...item, feedback: description, status: STATUS.reject };
+      }
+      return { ...item };
+    });
+
+    newData = newData.sort((a, b) => a.status.localeCompare(b.status));
+
     yield put({
-      type: AdminAction.CREATE_FEEDBACK.SUCCESS
+      type: AdminAction.CREATE_FEEDBACK.SUCCESS,
+      payload: { data: newData }
     });
   } catch (error) {
     errorNotification(getError(error));
@@ -66,7 +80,7 @@ function* updateBooking({ payload }) {
 
     successNotification(message);
 
-    yield fork(fetchListBookings, { payload: { page: 1, perPage: 8 } });
+    // yield fork(fetchListBookings, { payload: { page: 1, perPage: 8 } });
   } catch (error) {
     errorNotification(getError(error));
   }

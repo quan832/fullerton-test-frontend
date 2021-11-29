@@ -43,6 +43,22 @@ const adminReducer = (state = initialState, { type, payload }) => {
         isFetching: false,
         error: payload
       };
+    case AdminAction.CREATE_FEEDBACK.REQUEST:
+      return {
+        ...state,
+        isFetching: true
+      };
+    case AdminAction.CREATE_FEEDBACK.SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        data: payload.data
+      };
+    case AdminAction.CREATE_FEEDBACK.ERROR:
+      return {
+        ...state,
+        isFetching: false
+      };
     default:
       return state;
   }
