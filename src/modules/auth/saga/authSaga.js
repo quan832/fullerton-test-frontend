@@ -1,13 +1,13 @@
 import { all, call, put, takeLatest } from '@redux-saga/core/effects';
 import { history } from 'App/App';
 import { Message } from 'utils/Message';
-import jwtDecode from "jwt-decode"
+import jwtDecode from 'jwt-decode';
 import { errorNotification, getError, successNotification } from 'utils/Notifcation';
 import { LOGIN_USER, LOGOUT_USER } from '../actions/authAction';
 import LoginAction from '../actions/authAction';
 import { API } from 'apis/index';
 
-function setAccessToken(accessToken, refreshToken) {
+export function setAccessToken(accessToken, refreshToken) {
   //   const expiresAt = moment(authResult.expiration).valueOf()
   localStorage.setItem('accessToken', accessToken);
   sessionStorage.setItem('accessToken', accessToken);
@@ -32,19 +32,19 @@ function removeAccessToken() {
 }
 
 export function getUserInfo() {
-  const token = getAccessToken()
+  const token = getAccessToken();
   if (token) {
     try {
-      const decodedToken = jwtDecode(token)
+      const decodedToken = jwtDecode(token);
       if (decodedToken && decodedToken.data) {
-        return decodedToken.data
+        return decodedToken.data;
       }
     } catch (error) {
-      removeAccessToken()
-      return {}
+      removeAccessToken();
+      return {};
     }
   }
-  return {}
+  return {};
 }
 
 export function getAccessToken() {

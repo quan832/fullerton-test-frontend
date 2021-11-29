@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { isObject, map, flatten } from 'underscore';
-import { getAccessToken } from 'modules/auth/saga/authSaga';
+import { getAccessToken, setAccessToken } from 'modules/auth/saga/authSaga';
 import qs from 'qs';
 import { API_VERSION_1, API_VERSION_2, API_VERSION_NONE, BASE_URL } from './const';
 import accountAPI from './auth/auth';
@@ -8,7 +8,6 @@ import bookingAPI from './bookings/bookings';
 import categoriesAPI from './categories/categories';
 import feedbackAPI from './feedback/feedback';
 import { handleLogout } from 'routes/routes';
-
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
@@ -77,7 +76,9 @@ axios.interceptors.response.use(
         })
           .then((token) => {
             originalRequest.headers.Authorization = `Bearer ${token}`;
-            return HttpClient.request(originalRequest);
+            // return axios.create().request(originalRequest);
+            const instance = axios.create();
+            return instance.request(originalRequest);
           })
           .catch((err) => {
             return Promise.reject(err);
@@ -92,12 +93,12 @@ axios.interceptors.response.use(
         accountAPI
           .refreshToken(token, refresh)
           .then(({ data }) => {
-            localStorage.setItem('accessToken', data.token);
-            localStorage.setItem('refreshToken', data.refreshtoken);
-            HttpClient.defaults.headers.common.Authorization = `Bearer ${data.token}`;
+            const instance = axios.create();
+            setAccessToken(data.accessToken, data.refreshToken);
+            instance.defaults.headers.common.Authorization = `Bearer ${data.token}`;
             originalRequest.headers.Authorization = `Bearer ${data.token}`;
-            processQueue(null, data.token);
-            resolve(HttpClient(originalRequest));
+            processQueue(null, data.accessToken);
+            resolve(instance.request(originalRequest));
           })
           .catch((err) => {
             processQueue(err, null);

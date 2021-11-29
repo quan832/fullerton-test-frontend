@@ -1,6 +1,7 @@
 import React from 'react';
 import { Divider, Select } from 'antd';
 import { InputAntd, SelectInputStyled } from 'stylesheet/Input/Input.styled';
+import { ButtonStyled } from 'stylesheet/Button/Button.styled';
 
 const { Option } = Select;
 
@@ -38,7 +39,7 @@ export default function SelectInput({ defaultValue, options, disabled }) {
             {menu}
             <Divider style={{ margin: '4px 0' }} />
             <div style={{ display: 'flex', flexWrap: 'nowrap', padding: 8 }}>
-              <InputAntd small />
+              <ButtonStyled purple>+ Add more category</ButtonStyled>
             </div>
           </div>
         )}
