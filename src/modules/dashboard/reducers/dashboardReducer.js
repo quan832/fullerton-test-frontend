@@ -100,7 +100,7 @@ const dashboardReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         isFetching: false,
-        categoryOptions: payload.data
+        categoryOptions: [...payload.data]
       };
     case DashboardAction.CREATE_CATEGORY.ERROR:
       return {

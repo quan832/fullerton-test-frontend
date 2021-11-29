@@ -112,18 +112,21 @@ function* createNewBooking({ payload }) {
 
 function* createCategory({ payload }) {
   try {
-    const { title } = payload;
+    const {
+      data: { title }
+    } = payload;
     const categoryOptions = yield select(getCategoryOptions);
     yield put({ type: DashboardAction.CREATE_CATEGORY.REQUEST });
 
+    console.log(categoryOptions);
+
     const { data } = yield call(API.categoriesAPI.createCategory, title);
 
-    let newData = [...categoryOptions];
-    newData = newData.push(data);
+    let newData = [...categoryOptions, data];
 
     yield put({ type: DashboardAction.CREATE_CATEGORY.SUCCESS, payload: { data: newData } });
 
-    yield fork(fetchCategoryOptions);
+    // yield fork(fetchCategoryOptions());
   } catch (error) {
     errorNotification(getError(error));
     yield put({

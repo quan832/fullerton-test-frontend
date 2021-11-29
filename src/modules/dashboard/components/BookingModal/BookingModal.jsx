@@ -104,7 +104,7 @@ export default function BookingModal({ isOpen, closeModal, id, type }) {
   }, [categoryOptions]);
 
   React.useEffect(() => {
-    setValues({ ...initialValue });
+    setValues(initialValue);
   }, [isOpenModal]);
 
   const formRef = useRef(null);
@@ -212,7 +212,9 @@ export default function BookingModal({ isOpen, closeModal, id, type }) {
                       <>
                         <LabelStyled>Category</LabelStyled>
                         <SelectInput
-                          defaultValue={categoryOptions[0].title}
+                          defaultValue={
+                            isEditModal(type) ? bookingItem.place : categoryOptions[0]?.title
+                          }
                           options={categoryOptions}
                           name="category"
                           id="category"
