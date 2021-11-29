@@ -52,8 +52,8 @@ export const ButtonStyled = styled.button`
     props.purpleGhost &&
     css`
       color: #5624d0;
+      font-weight: 700;
       background-color: transparent;
-      min-width: auto;
       padding: 0;
       &:hover {
         color: #401b9c;

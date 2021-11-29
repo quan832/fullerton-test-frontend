@@ -11,6 +11,7 @@ const initialState = {
     type: null
   },
   categoryOptions: [],
+  isFetching: false,
   bookings: {
     data: [],
     total: null,
@@ -89,6 +90,23 @@ const dashboardReducer = (state = initialState, { type, payload }) => {
           ...state.bookings,
           isFetching: false
         }
+      };
+    case DashboardAction.CREATE_CATEGORY.REQUEST:
+      return {
+        ...state,
+        isFetching: true
+      };
+    case DashboardAction.CREATE_CATEGORY.SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        categoryOptions: payload.data
+      };
+    case DashboardAction.CREATE_CATEGORY.ERROR:
+      return {
+        ...state,
+        isFetching: false,
+        error: ''
       };
     default:
       return state;

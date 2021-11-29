@@ -56,7 +56,7 @@ export default function DashboardContainer() {
           </TabPane>
         </Tabs>
       </div>
-      <DashboardLastChild className="mt-20">
+      <DashboardLastChild className="mt-20 pr-30">
         <FlexDiv>
           <Pagination
             total={total}

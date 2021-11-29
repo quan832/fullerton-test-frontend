@@ -120,6 +120,10 @@ export default function BookingModal({ isOpen, closeModal, id, type }) {
     setValues({ ...initialValue });
   };
 
+  const onCreateCategory = (payload) => {
+    dispatch(DashboardAction.createCategory(payload));
+  };
+
   const onDelete = () => {
     dispatch(DashboardAction.deleteBooking(id));
   };
@@ -212,8 +216,10 @@ export default function BookingModal({ isOpen, closeModal, id, type }) {
                           options={categoryOptions}
                           name="category"
                           id="category"
+                          isMoreDropdown={true}
                           disabled={isEditModal(type)}
                           small
+                          actionSubmitMore={onCreateCategory}
                           onBlur={handleBlur}
                           {...field}
                         />
