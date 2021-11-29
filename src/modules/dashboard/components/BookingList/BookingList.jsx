@@ -2,6 +2,7 @@ import DashboardAction from 'modules/dashboard/actions/dashboardAction';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import BookingItem from '../BookingItem/BookingItem';
+import EmptyAntd from 'components/Nodata/Empty';
 
 const renderBookingItem = (data) => {
   return data.map((item, index) => (
@@ -28,5 +29,9 @@ export default function BookingList() {
     setBookingList([...data]);
   }, [data]);
 
-  return <div className="mt-25">{renderBookingItem(bookingList)}</div>;
+  return (
+    <div className="mt-25">
+      {bookingList.length !== 0 ? renderBookingItem(bookingList) : <EmptyAntd />}
+    </div>
+  );
 }
