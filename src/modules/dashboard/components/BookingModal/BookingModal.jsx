@@ -12,9 +12,17 @@ import { DeleteOutlined } from '@ant-design/icons';
 import * as Yup from 'yup';
 import { Tag } from 'antd';
 
-import { CheckCircleOutlined, MinusCircleOutlined } from '@ant-design/icons';
+import { CheckCircleOutlined, MinusCircleOutlined, SyncOutlined } from '@ant-design/icons';
 
-const renderStatus = (isConfirm) => {
+const renderStatus = (status, isConfirm) => {
+  if (status === STATUS.pending) {
+    return (
+      <Tag className="ml-10" icon={<SyncOutlined spin />} color="processing">
+        processing
+      </Tag>
+    );
+  }
+
   switch (isConfirm) {
     case true:
       return (
@@ -33,7 +41,7 @@ const renderStatus = (isConfirm) => {
   }
 };
 
-const renderProposedDate = (date, isDisabled, setValue) => {
+const renderProposedDate = (date, isDisabled, setValue, status) => {
   return date.map((item, index) => {
     let defaultValue = isDisabled
       ? moment(item.startDate).format(FORMAT_DATE)
@@ -46,7 +54,7 @@ const renderProposedDate = (date, isDisabled, setValue) => {
             <>
               <LabelStyled>
                 Proposed Date {index + 1}
-                {isDisabled ? renderStatus(item.isConfirm) : null}
+                {isDisabled ? renderStatus(status, item.isConfirm) : null}
               </LabelStyled>
               <DatePickerAntd
                 name={`date[${index}]`}
@@ -110,8 +118,9 @@ export default function BookingModal({ isOpen, closeModal, id, type }) {
   const formRef = useRef(null);
 
   const onSetDate = (value, index) => {
-    const newDate = [...initialValues.date];
+    let newDate = [...initialValues.date];
     newDate[index] = value;
+
     setValues({ ...initialValues, date: newDate });
   };
 
@@ -239,7 +248,8 @@ export default function BookingModal({ isOpen, closeModal, id, type }) {
             {renderProposedDate(
               isEditModal(type) ? bookingItem.date : initialValues.date,
               isEditModal(type),
-              onSetDate
+              onSetDate,
+              isEditModal(type) ? bookingItem.status : null
             )}
             {isEditModal(type) ? (
               <ButtonStyled onClick={onDelete} dangerText className="mt-10" w100 input>
