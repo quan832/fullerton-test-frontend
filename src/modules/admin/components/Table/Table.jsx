@@ -70,7 +70,7 @@ const expandedRowRender = (id, date, status, onApprove) => {
           <ButtonStyled
             purple
             onClick={() => onApprove(id, record.id)}
-            disabled={!isActive || record.isConfirm}>
+            disabled={record.isConfirm || !isActive}>
             Approve
           </ButtonStyled>
         );
