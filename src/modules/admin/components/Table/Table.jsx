@@ -65,15 +65,30 @@ const expandedRowRender = (id, date, status, onApprove) => {
       key: `isActive`,
       width: '20%',
       render: (isActive, record) => {
-        return (
-          // disable when date is not active
-          <ButtonStyled
-            purple
-            onClick={() => onApprove(id, record.id)}
-            disabled={record.isConfirm || !isActive}>
-            Approve
-          </ButtonStyled>
-        );
+        if (record.isActive) {
+          if (record.isConfirm) {
+            return (
+              // disable when date is not active
+              <ButtonStyled purple disabled={true}>
+                Approve
+              </ButtonStyled>
+            );
+          } else {
+            return (
+              // disable when date is not active
+              <ButtonStyled purple onClick={() => onApprove(id, record.id)} disabled={false}>
+                Approve
+              </ButtonStyled>
+            );
+          }
+        } else {
+          return (
+            // disable when date is not active
+            <ButtonStyled purple onClick={() => onApprove(id, record.id)} disabled={true}>
+              Approve
+            </ButtonStyled>
+          );
+        }
       }
     }
   ];
