@@ -35,8 +35,6 @@ function* createFeedback(id, description) {
   try {
     yield put({ type: AdminAction.CREATE_FEEDBACK.REQUEST });
 
-    console.log(description);
-
     const {
       data: { message }
     } = yield call(API.feedbackAPI.createFeedback, id, description);
@@ -54,13 +52,13 @@ function* updateBooking({ payload }) {
     const { id, status = null, dateId = null, description } = payload;
     yield put({ type: AdminAction.UPDATE_BOOKING.REQUEST });
 
-    console.log(description);
-
     const {
       data: { message }
     } = yield call(API.bookingAPI.updateBookingStatus, { id, status, dateId });
 
-    yield fork(createFeedback, id, description);
+    if (status === STATUS.reject) {
+      yield fork(createFeedback, id, description);
+    }
 
     yield put({
       type: AdminAction.UPDATE_BOOKING.SUCCESS

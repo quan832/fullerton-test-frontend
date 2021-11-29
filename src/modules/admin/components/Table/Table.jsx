@@ -82,7 +82,7 @@ const expandedRowRender = (id, date, status, onApprove) => {
 };
 
 export default function TableAdmin() {
-  const { data, page } = useSelector((state) => state.admin);
+  const { data, page, isFetching } = useSelector((state) => state.admin);
 
   const dispatch = useDispatch();
 
@@ -112,7 +112,7 @@ export default function TableAdmin() {
       <FlexDiv alignCenter spaceBetween>
         <span>Booking Confirm</span>
         <span style={{ cursor: 'pointer' }} onClick={onRefreshPage}>
-          Refresh <ReloadOutlined style={{ marginLeft: '5px' }} />
+          Refresh <ReloadOutlined rotate={isFetching ? 180 : 0} style={{ marginLeft: '5px' }} />
         </span>
       </FlexDiv>
     );
@@ -165,12 +165,12 @@ export default function TableAdmin() {
         { text: 'Rejected', value: STATUS.reject }
       ],
       filterMode: 'tree',
-      onFilter: (value, record) => record.status.includes(value),
+      onFilter: (value, record) => record.status.includes(value, record),
       width: '15%',
       dataIndex: 'status',
-      render: (status) => (
+      render: (status, record) => (
         <>
-          <Status type={status} />
+          <Status type={status} feedback={record.feedback} />
         </>
       )
     },

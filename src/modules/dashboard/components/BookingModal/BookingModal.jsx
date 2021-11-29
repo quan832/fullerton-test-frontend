@@ -165,7 +165,7 @@ export default function BookingModal({ isOpen, closeModal, id, type }) {
                           {...field}
                           value={isEditModal(type) ? bookingItem.place : initialValues.place}
                           onChange={(e) => {
-                            console.log(e);
+                            // console.log(e);
                             const value = e.currentTarget.value;
                             setValues({ ...initialValues, place: value });
                           }}

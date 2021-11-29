@@ -2,8 +2,9 @@ import React from 'react';
 import { Tag } from 'antd';
 import { STATUS } from 'utils/ENUM';
 import { CheckCircleOutlined, SyncOutlined, MinusCircleOutlined } from '@ant-design/icons';
+import Popup from '../Popup/Popup';
 
-const renderTag = (type) => {
+const renderTag = (type, feedback) => {
   switch (type) {
     case STATUS.approve:
       return (
@@ -19,13 +20,19 @@ const renderTag = (type) => {
       );
     case STATUS.reject:
       return (
-        <Tag icon={<MinusCircleOutlined />} color="default">
-          Rejected
-        </Tag>
+        <Popup
+          title="Why reject?"
+          contentDescription={feedback}
+          Component={
+            <Tag style={{ cursor: 'pointer' }} icon={<MinusCircleOutlined />} color="default">
+              Rejected
+            </Tag>
+          }
+        />
       );
   }
 };
 
-export default function Status({ type }) {
-  return <>{renderTag(type)}</>;
+export default function Status({ type, feedback }) {
+  return <>{renderTag(type, feedback)}</>;
 }
