@@ -1,3 +1,4 @@
+import { Spin } from 'antd';
 import { isLogin } from 'modules/auth/saga/authSaga';
 import React from 'react';
 import { useSelector } from 'react-redux';
@@ -8,19 +9,21 @@ export default function LoginTemplate(props) {
   // es6
   let { Component, ...restRoute } = props;
 
-  const { isAuthenticated } = useSelector((state) => state.auth);
+  const { isAuthenticated, isFetching } = useSelector((state) => state.auth);
 
   return (
     <Route
       {...restRoute}
       render={(propsRoute) => {
         return !isAuthenticated ? (
-          <LoginTemplateStyled>
-            <LoginContentStyled>
-              <Component {...propsRoute} />
-            </LoginContentStyled>
-            <IllustrationTheme />
-          </LoginTemplateStyled>
+          <Spin spinning={isFetching} style={{ height: '100%' }}>
+            <LoginTemplateStyled>
+              <LoginContentStyled>
+                <Component {...propsRoute} />
+              </LoginContentStyled>
+              <IllustrationTheme />
+            </LoginTemplateStyled>
+          </Spin>
         ) : (
           <Redirect to="/" />
         );
