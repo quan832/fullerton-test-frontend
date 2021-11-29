@@ -72,6 +72,7 @@ function* updateBooking({ payload }) {
 
     if (status === STATUS.reject) {
       yield fork(createFeedback, id, description);
+      return;
     }
 
     yield put({
@@ -80,7 +81,7 @@ function* updateBooking({ payload }) {
 
     successNotification(message);
 
-    // yield fork(fetchListBookings, { payload: { page: 1, perPage: 8 } });
+    yield fork(fetchListBookings, { payload: { page: 1, perPage: 8 } });
   } catch (error) {
     errorNotification(getError(error));
   }

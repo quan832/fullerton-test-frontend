@@ -118,8 +118,6 @@ function* createCategory({ payload }) {
     const categoryOptions = yield select(getCategoryOptions);
     yield put({ type: DashboardAction.CREATE_CATEGORY.REQUEST });
 
-    console.log(categoryOptions);
-
     const { data } = yield call(API.categoriesAPI.createCategory, title);
 
     let newData = [...categoryOptions, data];

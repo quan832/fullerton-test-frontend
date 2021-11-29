@@ -21,7 +21,8 @@ export default function SelectInput({
   options,
   disabled,
   isMoreDropdown,
-  actionSubmitMore
+  actionSubmitMore,
+  onChangeDropDown
 }) {
   const [input, setInput] = useState(null);
 
@@ -74,7 +75,6 @@ export default function SelectInput({
       <Select
         showSearch
         disabled={disabled}
-        //   placeholder={placeholder}
         defaultValue={defaultValue}
         style={SelectStyle}
         optionFilterProp="children"
@@ -82,6 +82,9 @@ export default function SelectInput({
         filterOption={(input, option) =>
           option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
         }
+        onChange={(value, option) => {
+          onChangeDropDown(parseInt(option.key, 10));
+        }}
         dropdownRender={(menu) =>
           isMoreDropdown ? (
             <div>

@@ -115,6 +115,10 @@ export default function BookingModal({ isOpen, closeModal, id, type }) {
     setValues({ ...initialValues, date: newDate });
   };
 
+  const onChangeCategory = (index) => {
+    setValues({ ...initialValues, category: categoryOptions[index].title });
+  };
+
   const onSubmit = () => {
     if (!isEditModal(type)) dispatch(DashboardAction.createBooking(initialValues));
     setValues({ ...initialValue });
@@ -212,15 +216,16 @@ export default function BookingModal({ isOpen, closeModal, id, type }) {
                       <>
                         <LabelStyled>Category</LabelStyled>
                         <SelectInput
+                          name="category"
+                          id="category"
+                          small
                           defaultValue={
                             isEditModal(type) ? bookingItem.place : categoryOptions[0]?.title
                           }
                           options={categoryOptions}
-                          name="category"
-                          id="category"
                           isMoreDropdown={true}
                           disabled={isEditModal(type)}
-                          small
+                          onChangeDropDown={onChangeCategory}
                           actionSubmitMore={onCreateCategory}
                           onBlur={handleBlur}
                           {...field}
