@@ -85,15 +85,15 @@ axios.interceptors.response.use(
       }
 
       isRefreshing = true;
-      const refresh = localStorage.getItem('refresh_token');
-      const token = localStorage.getItem('access_token') || sessionStorage.getItem('access_token');
+      const refresh = localStorage.getItem('refreshToken');
+      const token = localStorage.getItem('accessToken') || sessionStorage.getItem('accessToken');
 
       return new Promise((resolve, reject) => {
         accountAPI
           .refreshToken(token, refresh)
           .then(({ data }) => {
-            localStorage.setItem('access_token', data.token);
-            localStorage.setItem('refresh_token', data.refreshtoken);
+            localStorage.setItem('accessToken', data.token);
+            localStorage.setItem('refreshToken', data.refreshtoken);
             HttpClient.defaults.headers.common.Authorization = `Bearer ${data.token}`;
             originalRequest.headers.Authorization = `Bearer ${data.token}`;
             processQueue(null, data.token);
