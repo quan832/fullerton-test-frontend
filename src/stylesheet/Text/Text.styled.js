@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 
 export const TextSpan = styled.span`
-  font-size: 0.75rem;
+  font-size: 1rem;
 
   ${(props) =>
     props.error &&
@@ -12,7 +12,7 @@ export const TextSpan = styled.span`
   ${(props) =>
     props.ml &&
     css`
-      margin-left: 10px;
+      margin-left: 2px;
     `}
 `;
 

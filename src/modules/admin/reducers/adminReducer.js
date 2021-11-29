@@ -1,6 +1,8 @@
-import AdminAction from '../actions/adminAction';
+import AdminAction, { CLOSE_MODAL, OPEN_MODAL } from '../actions/adminAction';
 
 const initialState = {
+  isOpenModal: false,
+  bookingIdReject: null,
   data: [],
   total: null,
   page: 1,
@@ -9,6 +11,18 @@ const initialState = {
 
 const adminReducer = (state = initialState, { type, payload }) => {
   switch (type) {
+    case OPEN_MODAL:
+      return {
+        ...state,
+        isOpenModal: true,
+        bookingIdReject: payload.id
+      };
+    case CLOSE_MODAL:
+      return {
+        ...state,
+        isOpenModal: false,
+        bookingIdReject: null
+      };
     case AdminAction.FETCH_BOOKINGS.REQUEST:
       return {
         ...state,

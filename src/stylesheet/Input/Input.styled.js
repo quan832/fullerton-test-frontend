@@ -1,6 +1,8 @@
 import { DatePicker, Input } from 'antd';
 import styled, { css } from 'styled-components';
 
+const { TextArea } = Input;
+
 export const FormGroup = styled.div`
   margin-bottom: 15px;
   position: relative;
@@ -49,6 +51,8 @@ export const SelectInputStyled = styled.div`
   }
 `;
 
+export const TextAreaAntd = styled(TextArea)``;
+
 export const InputAntd = styled(Input)`
   &:hover,
   &:focus,
@@ -82,6 +86,13 @@ export const InputAntd = styled(Input)`
     props.small &&
     css`
       height: 40px;
+    `}
+
+    
+  ${(props) =>
+    props.large &&
+    css`
+      height: 80px;
     `}
 `;
 

@@ -2,7 +2,12 @@ import { all, call, fork, put, select, takeLatest } from '@redux-saga/core/effec
 import { Message } from 'utils/Message';
 import { errorNotification, getError, successNotification } from 'utils/Notifcation';
 import { API } from 'apis/index';
-import AdminAction, { FETCH_BOOKINGS } from '../actions/adminAction';
+import AdminAction, {
+  CREATE_FEEDBACK,
+  FETCH_BOOKINGS,
+  UPDATE_BOOKING
+} from '../actions/adminAction';
+import { STATUS } from 'utils/ENUM';
 
 function* fetchListBookings({ payload }) {
   try {
@@ -26,10 +31,61 @@ function* fetchListBookings({ payload }) {
   }
 }
 
+function* createFeedback(id, description) {
+  try {
+    yield put({ type: AdminAction.CREATE_FEEDBACK.REQUEST });
+
+    console.log(description);
+
+    const {
+      data: { message }
+    } = yield call(API.feedbackAPI.createFeedback, id, description);
+
+    yield put({
+      type: AdminAction.CREATE_FEEDBACK.SUCCESS
+    });
+  } catch (error) {
+    errorNotification(getError(error));
+  }
+}
+
+function* updateBooking({ payload }) {
+  try {
+    const { id, status = null, dateId = null, description } = payload;
+    yield put({ type: AdminAction.UPDATE_BOOKING.REQUEST });
+
+    console.log(description);
+
+    const {
+      data: { message }
+    } = yield call(API.bookingAPI.updateBookingStatus, { id, status, dateId });
+
+    yield fork(createFeedback, id, description);
+
+    yield put({
+      type: AdminAction.UPDATE_BOOKING.SUCCESS
+    });
+
+    successNotification(message);
+
+    yield fork(fetchListBookings, { payload: { page: 1, perPage: 8 } });
+  } catch (error) {
+    errorNotification(getError(error));
+  }
+}
+
 function* watchFetchListBookings() {
   yield takeLatest(FETCH_BOOKINGS, fetchListBookings);
 }
 
+function* watchUpdateBooking() {
+  yield takeLatest(UPDATE_BOOKING, updateBooking);
+}
+
+function* watchCreateFeedback() {
+  yield takeLatest(CREATE_FEEDBACK, createFeedback);
+}
+
 export default function* adminSaga() {
-  yield all([watchFetchListBookings()]);
+  yield all([watchFetchListBookings(), watchUpdateBooking(), watchCreateFeedback()]);
 }

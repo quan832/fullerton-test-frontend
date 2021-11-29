@@ -1,6 +1,6 @@
 import { Modal, Row, Col, DatePicker } from 'antd';
 import SelectInput from 'components/SelectInput/SelectInput';
-import { Field, Form, Formik, useFormikContext } from 'formik';
+import { Field, Form, Formik } from 'formik';
 import React, { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { DatePickerAntd, FormGroup, InputAntd, LabelStyled } from 'stylesheet/Input/Input.styled';
@@ -10,7 +10,6 @@ import { FORMAT_DATE, STATUS, TYPE_MODAL } from 'utils/ENUM';
 import { ButtonStyled } from 'stylesheet/Button/Button.styled';
 import { DeleteOutlined } from '@ant-design/icons';
 import * as Yup from 'yup';
-import { TextSpan } from 'stylesheet/Text/Text.styled';
 
 const renderProposedDate = (date, isDisabled, setValue) => {
   return date.map((item, index) => {

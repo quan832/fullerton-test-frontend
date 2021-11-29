@@ -14,7 +14,7 @@ const renderTag = (type) => {
     case STATUS.pending:
       return (
         <Tag icon={<SyncOutlined spin />} color="processing">
-          Pending
+          Pending Review
         </Tag>
       );
     case STATUS.reject:

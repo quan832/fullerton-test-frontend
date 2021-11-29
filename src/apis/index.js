@@ -4,8 +4,10 @@ import { getAccessToken } from 'modules/auth/saga/authSaga';
 import qs from 'qs';
 import { API_VERSION_1, API_VERSION_2, API_VERSION_NONE, BASE_URL } from './const';
 import accountAPI from './auth/auth';
-import bookingAPI from "./bookings/bookings"
-import categoriesAPI from "./categories/categories"
+import bookingAPI from './bookings/bookings';
+import categoriesAPI from './categories/categories';
+import feedbackAPI from './feedback/feedback';
+
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
@@ -65,4 +67,4 @@ export function getErrorMessage(error) {
   return message;
 }
 
-export const API = { accountAPI, bookingAPI, categoriesAPI };
+export const API = { accountAPI, bookingAPI, categoriesAPI, feedbackAPI };

@@ -72,4 +72,18 @@ export const ButtonStyled = styled.button`
     css`
       width: 100%;
     `}
+
+     ${(props) =>
+    props.disabled &&
+    css`
+      cursor: not-allowed;
+      background-color: #e4e6ef;
+      border-color: #e4e6ef;
+      color: #000000;
+      &:hover {
+        color: #212529;
+        background-color: #e2e6ea;
+        border-color: #dae0e5;
+      }
+    `}
 `;

@@ -10,14 +10,20 @@ const deleteBooking = (id) => {
   return axios.delete(`/bookings/${id}`);
 };
 
-const createBooking = ({data}) => {
+const createBooking = ({ data }) => {
   return axios.post(`/bookings`, data);
+};
+
+const updateBookingStatus = ({ id, dateId, status }) => {
+  const data ={dateId,status}
+  return axios.put(`/bookings/${id}/status`, data);
 };
 
 const Bookings = {
   fetchBookings,
   deleteBooking,
-  createBooking
+  createBooking,
+  updateBookingStatus
 };
 
 export default Bookings;
