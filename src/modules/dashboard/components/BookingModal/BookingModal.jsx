@@ -41,6 +41,11 @@ const renderStatus = (status, isConfirm) => {
   }
 };
 
+function disabledDate(current) {
+  // Can not select days before today and today
+  return current && current < moment().endOf('day');
+}
+
 const renderProposedDate = (date, isDisabled, setValue, status) => {
   return date.map((item, index) => {
     let defaultValue = isDisabled
@@ -60,6 +65,7 @@ const renderProposedDate = (date, isDisabled, setValue, status) => {
                 name={`date[${index}]`}
                 id={`date[${index}]`}
                 small
+                disabledDate={disabledDate}
                 onChange={!isDisabled ? (date, dateString) => setValue(dateString, index) : null}
                 disabled={isDisabled}
                 format={FORMAT_DATE}
