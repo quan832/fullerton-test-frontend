@@ -1,6 +1,8 @@
 import React, { Component, useState } from 'react'
-import { Table } from 'antd';
-
+import { Table, Button } from 'antd';
+import {
+    DashboardContainerStyled
+} from 'modules/dashboard/container/DashboardContainer.styled';
 const columns = [
     {
         title: 'Name',
@@ -17,12 +19,12 @@ const columns = [
 ];
 
 const data = [];
-for (let i = 0; i < 10; i++) {
+for (let i = 0; i < 3; i++) {
     data.push({
         key: i,
-        name: "Edward King" + { i },
+        name: "Edward King" + i,
         age: 32,
-        address: "London, Park Lane no." + { i },
+        address: "London, Park Lane no." + i,
     });
 }
 
@@ -54,7 +56,7 @@ export default function Clinic() {
     };
     const hasSelected = selectedRowKeys.length > 0;
     return (
-        <div>
+        <DashboardContainerStyled>
             <div style={{ marginBottom: 16 }}>
                 <Button type="primary" onClick={start} disabled={!hasSelected} loading={loading}>
                     Reload
@@ -64,6 +66,5 @@ export default function Clinic() {
                 </span>
             </div>
             <Table rowSelection={rowSelection} columns={columns} dataSource={data} />
-        </div>
-    )
+        </DashboardContainerStyled>)
 }
