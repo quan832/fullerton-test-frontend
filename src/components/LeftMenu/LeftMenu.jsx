@@ -2,19 +2,22 @@ import React from 'react';
 import { Menu, Avatar, Layout, Divider } from 'antd';
 import {
   PushpinOutlined,
-  // MenuUnfoldOutlined,
-  // MenuFoldOutlined,
   PlaySquareOutlined,
   DashboardOutlined,
   UserOutlined,
   SmileOutlined,
-  ToolOutlined
+  ToolOutlined,
+  TableOutlined
 } from '@ant-design/icons';
 import { Container } from './LeftMenu.styled';
 import logo from 'assets/images/logo.png';
 import { FlexDiv } from 'stylesheet/div/div.styled';
 import { useDispatch } from 'react-redux';
 import LoginAction from 'modules/auth/actions/authAction';
+import { Link } from 'react-router-dom';
+import { BsBookmarkHeart} from "react-icons/bs";
+
+import { MdPayment } from "react-icons/md";
 
 const { Sider } = Layout;
 
@@ -62,11 +65,16 @@ export default function LeftMenu() {
           // theme="dark"
           // inlineCollapsed={this.state.collapsed}
         >
-          <Menu.Item key="1" icon={<DashboardOutlined />}>
+          <Menu.Item key="1" icon={<BsBookmarkHeart />}>
             Booking
           </Menu.Item>
-          <Menu.Item key="2" icon={<PlaySquareOutlined />}>
+          <Menu.Item key="2" icon={<MdPayment />}>
             Payment
+          </Menu.Item>
+          <Menu.Item key="3" icon={<TableOutlined />}>
+            <Link to='/user'>
+              Clinic
+            </Link> 
           </Menu.Item>
           <Menu.Item key="sub1" icon={<SmileOutlined />}>
             Profile
