@@ -66,10 +66,14 @@ export default function LeftMenu() {
           // inlineCollapsed={this.state.collapsed}
         >
           <Menu.Item key="1" icon={<BsBookmarkHeart />}>
-            Booking
+          <Link to='/booking'>
+              Booking
+            </Link>
           </Menu.Item>
           <Menu.Item key="2" icon={<MdPayment />}>
-            Payment
+          <Link to='/payment'>
+              Payment
+            </Link>
           </Menu.Item>
           <Menu.Item key="3" icon={<TableOutlined />}>
             <Link to='/user'>
@@ -77,13 +81,19 @@ export default function LeftMenu() {
             </Link> 
           </Menu.Item>
           <Menu.Item key="sub1" icon={<SmileOutlined />}>
-            Profile
+          <Link to='/profile'>
+              Profile
+            </Link>
           </Menu.Item>
           <Menu.Item key="sub2" icon={<ToolOutlined />}>
-            Tools
+          <Link to='/tools'>
+              Tools
+            </Link>
           </Menu.Item>
           <Menu.Item key="sub3" icon={<PushpinOutlined />}>
-            Resource
+          <Link to='/resouce'>
+              Resource
+            </Link>
           </Menu.Item>
         </Menu>
         <div className="logout-menu">
