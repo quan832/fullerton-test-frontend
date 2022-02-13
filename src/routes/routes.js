@@ -22,11 +22,11 @@ const routesHome = [
     exact: true,
     component: ClinicPage
   },
-  {
-    path: '/admin',
-    exact: true,
-    component: ClinicPage1
-  }
+  // {
+  //   path: '/admin',
+  //   exact: true,
+  //   component: ClinicPage1
+  // }
 ];
 
 const routesAdmin = [
@@ -46,4 +46,4 @@ const routesAuth = [
 ];
 
 
-export const routes = { routesHome, routesAuth, routesAdmin};
+export const routes = { routesHome, routesAuth, routesAdmin };
