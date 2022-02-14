@@ -75,4 +75,4 @@ const routesAuth = [
 ];
 
 
-export const routes = { routesHome, routesAuth, routesAdmin};
+export const routes = { routesHome, routesAuth, routesAdmin };
