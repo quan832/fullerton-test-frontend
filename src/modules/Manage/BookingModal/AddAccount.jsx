@@ -41,57 +41,57 @@ const renderStatus = (status, isConfirm) => {
   }
 };
 
-// function disabledDate(current) {
-//   // Can not select days before today and today
-//   return current && current < moment().endOf('day');
-// }
+function disabledDate(current) {
+  // Can not select days before today and today
+  return current && current < moment().endOf('day');
+}
 
-// const renderProposedDate = (date, isDisabled, setValue, status) => {
-//   return date.map((item, index) => {
-//     let defaultValue = isDisabled
-//       ? moment(item.startDate).format(FORMAT_DATE)
-//       : moment().format(FORMAT_DATE);
+const renderProposedDate = (date, isDisabled, setValue, status) => {
+  return date.map((item, index) => {
+    let defaultValue = isDisabled
+      ? moment(item.startDate).format(FORMAT_DATE)
+      : moment().format(FORMAT_DATE);
 
-//     return (
-//       <FormGroup key={`${index}-${isDisabled}`}>
-//         <Field name={`date[${index}]`}>
-//           {({ field, form: { touched, errors } }) => (
-//             <>
-//               <LabelStyled>
-//                 Proposed Date {index + 1}
-//                 {isDisabled ? renderStatus(status, item.isConfirm) : null}
-//               </LabelStyled>
-//               <DatePickerAntd
-//                 name={`date[${index}]`}
-//                 id={`date[${index}]`}
-//                 small
-//                 disabledDate={disabledDate}
-//                 onChange={!isDisabled ? (date, dateString) => setValue(dateString, index) : null}
-//                 disabled={isDisabled}
-//                 format={FORMAT_DATE}
-//                 defaultValue={moment(defaultValue, FORMAT_DATE)}
-//               />
-//             </>
-//           )}
-//         </Field>
-//       </FormGroup>
-//     );
-//   });
-// };
+    return (
+      <FormGroup key={`${index}-${isDisabled}`}>
+        <Field name={`date[${index}]`}>
+          {({ field, form: { touched, errors } }) => (
+            <>
+              <LabelStyled>
+                Proposed Date {index + 1}
+                {isDisabled ? renderStatus(status, item.isConfirm) : null}
+              </LabelStyled>
+              <DatePickerAntd
+                name={`date[${index}]`}
+                id={`date[${index}]`}
+                small
+                disabledDate={disabledDate}
+                onChange={!isDisabled ? (date, dateString) => setValue(dateString, index) : null}
+                disabled={isDisabled}
+                format={FORMAT_DATE}
+                defaultValue={moment(defaultValue, FORMAT_DATE)}
+              />
+            </>
+          )}
+        </Field>
+      </FormGroup>
+    );
+  });
+};
 
 const isEditModal = (type) => {
   return type === TYPE_MODAL.edit ? true : false;
 };
 
-// const getDateNow = () => {
-//   const value = moment().format(FORMAT_DATE);
-//   return value;
-// };
+const getDateNow = () => {
+  const value = moment().format(FORMAT_DATE);
+  return value;
+};
 
 const BookingSchema = Yup.object().shape({
-  title: Yup.string().required('Name is required'),
+  title: Yup.string().required('Title is required'),
   place: Yup.string().required('Place is required'),
-  category: Yup.string().required('Category is required')
+  // category: Yup.string().required('Category is required')
 });
 
 export default function BookingModal({ isOpen, closeModal, id, type }) {
@@ -107,15 +107,15 @@ export default function BookingModal({ isOpen, closeModal, id, type }) {
     title: '',
     place: '',
     status: STATUS.pending,
-    // date: [getDateNow(), getDateNow(), getDateNow()],
-    category: categoryOptions[0]?.title
+    date: [getDateNow(), getDateNow(), getDateNow()],
+    // category: categoryOptions[0]?.title
   };
-cd 
+
   const [initialValues, setValues] = useState(initialValue);
 
-  React.useEffect(() => {
-    setValues({ ...initialValues, category: categoryOptions[0]?.title });
-  }, [categoryOptions]);
+  // React.useEffect(() => {
+  //   setValues({ ...initialValues, category: categoryOptions[0]?.title });
+  // }, [categoryOptions]);
 
   React.useEffect(() => {
     setValues(initialValue);
@@ -123,12 +123,12 @@ cd
 
   const formRef = useRef(null);
 
-  // const onSetDate = (value, index) => {
-  //   let newDate = [...initialValues.date];
-  //   newDate[index] = value;
+  const onSetDate = (value, index) => {
+    let newDate = [...initialValues.date];
+    newDate[index] = value;
 
-  //   setValues({ ...initialValues, date: newDate });
-  // };
+    setValues({ ...initialValues, date: newDate });
+  };
 
   const onChangeCategory = (index) => {
     setValues({ ...initialValues, category: categoryOptions[index].title });
@@ -162,7 +162,7 @@ cd
 
   return (
     <Modal
-      title={`${type} Booking Modal`}
+      title={`${type} Account`}
       width={850}
       visible={isOpen}
       onCancel={closeModal}
@@ -198,65 +198,35 @@ cd
                 )}
               </Field>
             </FormGroup>
-            <Row>
-              <Col span={12} style={{ paddingRight: '25px' }}>
-                <FormGroup>
-                  <Field name="place">
-                    {({ field, form: { touched, errors } }) => (
-                      <>
-                        <LabelStyled>Place</LabelStyled>
-                        <InputAntd
-                          name="place"
-                          id="place"
-                          small
-                          disabled={isEditModal(type)}
-                          {...field}
-                          value={isEditModal(type) ? bookingItem.place : initialValues.place}
-                          onChange={(e) => {
-                            // console.log(e);
-                            const value = e.currentTarget.value;
-                            setValues({ ...initialValues, place: value });
-                          }}
-                          onBlur={handleBlur}
-                        />
-                      </>
-                    )}
-                  </Field>
-                </FormGroup>
-              </Col>
-              <Col span={12}>
-                <FormGroup>
-                  <Field name="category">
-                    {({ field, form: { touched, errors } }) => (
-                      <>
-                        <LabelStyled>Category</LabelStyled>
-                        <SelectInput
-                          name="category"
-                          id="category"
-                          small
-                          defaultValue={
-                            isEditModal(type) ? bookingItem.place : categoryOptions[0]?.title
-                          }
-                          options={categoryOptions}
-                          isMoreDropdown={true}
-                          disabled={isEditModal(type)}
-                          onChangeDropDown={onChangeCategory}
-                          actionSubmitMore={onCreateCategory}
-                          onBlur={handleBlur}
-                          {...field}
-                        />
-                      </>
-                    )}
-                  </Field>
-                </FormGroup>
-              </Col>
-            </Row>
-            {/* {renderProposedDate(
+            <FormGroup>
+              <Field name="place">
+                {({ field, form: { touched, errors } }) => (
+                  <>
+                    <LabelStyled>Place</LabelStyled>
+                    <InputAntd
+                      name="place"
+                      id="place"
+                      small
+                      disabled={isEditModal(type)}
+                      {...field}
+                      value={isEditModal(type) ? bookingItem.place : initialValues.place}
+                      onChange={(e) => {
+                        // console.log(e);
+                        const value = e.currentTarget.value;
+                        setValues({ ...initialValues, place: value });
+                      }}
+                      onBlur={handleBlur}
+                    />
+                  </>
+                )}
+              </Field>
+            </FormGroup>
+            {renderProposedDate(
               isEditModal(type) ? bookingItem.date : initialValues.date,
               isEditModal(type),
               onSetDate,
               isEditModal(type) ? bookingItem.status : null
-            )} */}
+            )}
             {isEditModal(type) ? (
               <ButtonStyled onClick={onDelete} dangerText className="mt-10" w100 input>
                 Delete <DeleteOutlined />
