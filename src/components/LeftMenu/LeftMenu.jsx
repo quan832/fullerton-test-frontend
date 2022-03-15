@@ -17,7 +17,7 @@ import LoginAction from 'modules/auth/actions/authAction';
 import { Link } from 'react-router-dom';
 import { BsBookmarkHeart} from "react-icons/bs";
 
-import { MdPayment } from "react-icons/md";
+import { MdPayment, MdManageAccounts } from "react-icons/md";
 
 const { Sider } = Layout;
 
@@ -85,12 +85,17 @@ export default function LeftMenu() {
               Profile
             </Link>
           </Menu.Item>
-          <Menu.Item key="sub2" icon={<ToolOutlined />}>
+          <Menu.Item key="sub2" icon={<MdManageAccounts />}>
+          <Link to='/account'>
+              Manage Account
+            </Link>
+          </Menu.Item>
+          <Menu.Item key="sub3" icon={<ToolOutlined />}>
           <Link to='/tools'>
               Tools
             </Link>
           </Menu.Item>
-          <Menu.Item key="sub3" icon={<PushpinOutlined />}>
+          <Menu.Item key="sub4" icon={<PushpinOutlined />}>
           <Link to='/resouce'>
               Resource
             </Link>
