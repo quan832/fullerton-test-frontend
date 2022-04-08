@@ -5,6 +5,7 @@ import BookingItem from '../BookingItem/BookingItem';
 import EmptyAntd from 'components/Nodata/Empty';
 import { FORMAT_DATE, STATUS } from 'utils/ENUM';
 import moment from 'moment';
+import BookingModalEdit from '../BookingModal/BookingModalEdit';
 
 const renderSubTitle = (status, date, place) => {
   switch (status) {
@@ -17,28 +18,7 @@ const renderSubTitle = (status, date, place) => {
   }
 };
 
-const renderBookingItem = (data) => {
-  return data.map((item, index) => {
-    let startDate = null;
-    const date = item.date.find((child) => child.isConfirm === true);
 
-    if (date) {
-      startDate = date.startDate;
-    }
-
-    const subTitle = renderSubTitle(item.status, startDate, item.place);
-
-    return (
-      <BookingItem
-        key={index}
-        status={item.status}
-        subTitle={subTitle}
-        id={item.id}
-        title={item.title}
-      />
-    );
-  });
-};
 
 export default function BookingList() {
   const dispatch = useDispatch();
@@ -50,6 +30,45 @@ export default function BookingList() {
   };
 
   const { data } = useSelector((state) => state.dashboard.bookings);
+  const [bookingModal, setOpenModal] = React.useState(false)
+  const onOpenAddModal = () => {
+    // dispatch(DashboardAction.openBookingModal(null, TYPE_MODAL.add));
+    setOpenModal(true)
+  };
+
+  const renderBookingItem = (data) => {
+    return data.map((item, index) => {
+      let startDate = null;
+      const date = item.date.find((child) => child.isConfirm === true);
+
+      if (date) {
+        startDate = date.startDate;
+      }
+
+      const subTitle = renderSubTitle(item.status, startDate, item.place);
+
+      return (
+        <><BookingItem
+          key={index}
+          status={item.status}
+          subTitle={subTitle}
+          id={item.id}
+          title={item.title}
+          onClick={onOpenAddModal}
+        />
+          <BookingModalEdit
+            isOpen={bookingModal}
+            closeModal={() => {
+              setOpenModal(false);
+              // setBookingModalDate(true)
+            }}
+            type={'Edit'}
+            value={item}
+          />
+        </>
+      );
+    });
+  };
 
   useEffect(() => {
     fetchBookings();
@@ -63,5 +82,5 @@ export default function BookingList() {
     <div className="mt-25">
       {bookingList.length !== 0 ? renderBookingItem(bookingList) : <EmptyAntd />}
     </div>
-  );
+  ); 
 }

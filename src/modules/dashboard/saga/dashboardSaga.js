@@ -1,4 +1,4 @@
-import { all, call, fork, put, select, takeLatest } from '@redux-saga/core/effects';
+import { all, call, fork, put, select, takeLatest, delay } from '@redux-saga/core/effects';
 import { Message } from 'utils/Message';
 import { errorNotification, getError, successNotification } from 'utils/Notifcation';
 import { API } from 'apis/index';
@@ -10,10 +10,12 @@ import DashboardAction, {
   FETCH_BOOKINGS,
   FETCH_CATEGORY_OPTIONS
 } from '../actions/dashboardAction';
-
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 const getBookings = (state) => state.dashboard.bookings.data;
 const getCategoryOptions = (state) => state.dashboard.categoryOptions;
-
+const getTemporary = (state) => state.dashboard.bookings.temporary
 function* fetchListBookings({ payload }) {
   try {
     const { page = 1, perPage = 4 } = payload;
@@ -56,20 +58,24 @@ function* fetchCategoryOptions() {
 function* deleteBooking({ payload }) {
   try {
     const bookingData = yield select(getBookings);
-    const { id } = payload;
-    yield put({ type: DashboardAction.DELETE_BOOKING.REQUEST });
-    const {
-      data: { message }
-    } = yield call(API.bookingAPI.deleteBooking, id);
+    yield put({ type: DashboardAction.DELETE_BOOKING.REQUEST, payload: payload });
+    // const {
+    //   data: { message }
+    // } = yield call(API.bookingAPI.deleteBooking, id);
 
     let newData = [...bookingData];
-    newData = newData.filter((item) => item.id !== id);
+    newData = newData.filter((item) => {
+      console.log(item)
+      console.log(payload)
+      return (item.date[0] === payload.date[0] && item.time === payload.time) ? false : true
+    });
+    console.log(newData);
+    yield delay(500)
+    // yield put({ type: CLOSE_BOOKING_MODAL });
+    yield put({ type: DashboardAction.DELETE_BOOKING.SUCCESS, payload: newData });
 
-    yield put({ type: CLOSE_BOOKING_MODAL });
-    yield put({ type: DashboardAction.DELETE_BOOKING.SUCCESS, payload: { data: newData } });
-
-    yield fork(fetchListBookings, { payload: { page: 1, perPage: 4 } });
-    successNotification(message);
+    // yield fork(fetchListBookings, { payload: { page: 1, perPage: 4 } });
+    successNotification('Delete Success');
   } catch (error) {
     errorNotification(getError(error));
     yield put({
@@ -79,24 +85,26 @@ function* deleteBooking({ payload }) {
   }
 }
 
-function* createNewBooking({ payload }) {
+function* createNewBooking() {
   try {
-    const { data } = payload;
     const bookingData = yield select(getBookings);
+    const temporary = yield select(getTemporary)
     yield put({ type: DashboardAction.CREATE_BOOKING.REQUEST });
 
-    const {
-      data: { message }
-    } = yield call(API.bookingAPI.createBooking, payload);
+    // const {
+    //   data: { message }
+    // } = yield call(API.bookingAPI.createBooking, payload);
 
     let newData = [...bookingData];
-    newData = newData.push(data);
+    newData = [...newData, temporary];
+    yield delay(500)
+    // yield put({ type: CLOSE_BOOKING_MODAL });
+    console.log(temporary)
+    console.log(newData)
+    yield put({ type: DashboardAction.CREATE_BOOKING.SUCCESS, payload: newData });
 
-    yield put({ type: CLOSE_BOOKING_MODAL });
-    yield put({ type: DashboardAction.CREATE_BOOKING.SUCCESS, payload: { data: newData } });
-
-    yield fork(fetchListBookings, { payload: { page: 1, perPage: 4 } });
-    successNotification(message);
+    // yield fork(fetchListBookings, { payload: { page: 1, perPage: 4 } });
+    successNotification('Create Booking succesfully');
   } catch (error) {
     errorNotification(getError(error));
     yield put({
@@ -135,7 +143,7 @@ function* createCategory({ payload }) {
 }
 
 function* watchFetchListBookings() {
-  yield takeLatest(FETCH_BOOKINGS, fetchListBookings);
+  yield takeLatest(FETCH_BOOKINGS, () => console.log('fetch'));
 }
 
 function* watchCreateBooking() {

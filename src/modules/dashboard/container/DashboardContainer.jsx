@@ -10,6 +10,7 @@ import { Spin } from 'antd';
 import { ButtonStyled } from 'stylesheet/Button/Button.styled';
 import BookingModal from '../components/BookingModal/BookingModal';
 import { TYPE_MODAL } from 'utils/ENUM';
+import BookingModalDate from '../components/BookingModal/BookingDate';
 
 const { TabPane } = Tabs;
 
@@ -27,12 +28,12 @@ export default function DashboardContainer() {
     bookingModal: { isOpenModal, modalOpenId, type }
   } = useSelector((state) => state.dashboard);
 
-  const onCloseModal = () => {
-    dispatch(DashboardAction.closeBookingModal());
-  };
+  const [bookingModal, setOpenModal] = React.useState(false)
+  const [bookingModalDate, setBookingModalDate] = React.useState(false)
 
   const onOpenAddModal = () => {
-    dispatch(DashboardAction.openBookingModal(null, TYPE_MODAL.add));
+    // dispatch(DashboardAction.openBookingModal(null, TYPE_MODAL.add));
+    setOpenModal(true)
   };
 
   const dispatch = useDispatch();
@@ -67,7 +68,18 @@ export default function DashboardContainer() {
           />
         </FlexDiv>
       </DashboardLastChild>
-      <BookingModal isOpen={isOpenModal} id={modalOpenId} closeModal={onCloseModal} type={type} />
+      <BookingModal
+        isOpen={bookingModal}
+        closeModal={() => {
+          setOpenModal(false);
+          // setBookingModalDate(true)
+        }} type={'Add'}
+        openBookingModalDate={() => setBookingModalDate(true)}
+      />
+      <BookingModalDate
+        type={'Add'}
+        isOpen={bookingModalDate}
+        closeModal={() => { setBookingModalDate(false) }} />
     </DashboardContainerStyled>
   );
 }

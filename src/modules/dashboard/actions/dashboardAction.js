@@ -28,6 +28,10 @@ export const DELETE_BOOKING_ERROR = `${store}/DELETE_BOOKING_ERROR`;
 export const OPEN_BOOKING_MODAL = `${store}/OPEN_BOOKING_MODAL`;
 export const CLOSE_BOOKING_MODAL = `${store}/CLOSE_BOOKING_MODAL`;
 
+
+export const CREATE_BOOKING_STEP1 = `${store}/CREATE_BOOKING_STEP1`;
+export const CREATE_BOOKING_STEP2 = `${store}/CREATE_BOOKING_STEP2`;
+
 export default class DashboardAction {
   static FETCH_BOOKINGS = {
     REQUEST: FETCH_BOOKINGS_REQUEST,
@@ -66,17 +70,32 @@ export default class DashboardAction {
     };
   }
 
-  static createBooking(payload) {
+  static createBookingStep1(data) {
     return {
-      type: CREATE_BOOKING,
-      payload: { data: payload }
+      type: CREATE_BOOKING_STEP1,
+      payload: data
     };
   }
 
-  static deleteBooking(id) {
+  static createBookingStep2(data) {
+    return {
+      type: CREATE_BOOKING_STEP2,
+      payload: data
+    };
+  }
+
+  static createBooking(data) {
+    return {
+      type: CREATE_BOOKING,
+      payload: data
+    };
+  }
+
+
+  static deleteBooking(item) {
     return {
       type: DELETE_BOOKING,
-      payload: { id }
+      payload: item
     };
   }
 

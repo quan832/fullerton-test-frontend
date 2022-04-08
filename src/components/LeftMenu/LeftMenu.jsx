@@ -15,7 +15,7 @@ import { FlexDiv } from 'stylesheet/div/div.styled';
 import { useDispatch } from 'react-redux';
 import LoginAction from 'modules/auth/actions/authAction';
 import { Link } from 'react-router-dom';
-import { BsBookmarkHeart} from "react-icons/bs";
+import { BsBookmarkHeart } from "react-icons/bs";
 
 import { MdPayment, MdManageAccounts } from "react-icons/md";
 
@@ -38,16 +38,16 @@ export default function LeftMenu() {
         collapsible
         className="site-layout-background sider"
         collapsed={collapsed}
-        // onMouseLeave={(e) => {
-        //   if (!collapsed) {
-        //     setCollapsed(true);
-        //   }
-        // }}
-        // onMouseEnter={(e) => {
-        //   if (collapsed) {
-        //     setCollapsed(false);
-        //   }
-        // }}
+      // onMouseLeave={(e) => {
+      //   if (!collapsed) {
+      //     setCollapsed(true);
+      //   }
+      // }}
+      // onMouseEnter={(e) => {
+      //   if (collapsed) {
+      //     setCollapsed(false);
+      //   }
+      // }}
       >
         <div className="logo">
           <img src={logo} alt=""></img>
@@ -60,46 +60,46 @@ export default function LeftMenu() {
           className="menu-style"
           subMenuCloseDelay={0.8}
           subMenuOpenDelay={0.8}
-          // selectedKeys={'/'}
-          // style={{ height: "100%" }}
-          // theme="dark"
-          // inlineCollapsed={this.state.collapsed}
+        // selectedKeys={'/'}
+        // style={{ height: "100%" }}
+        // theme="dark"
+        // inlineCollapsed={this.state.collapsed}
         >
           <Menu.Item key="1" icon={<BsBookmarkHeart />}>
-          <Link to='/booking'>
+            <Link to='/'>
               Booking
             </Link>
           </Menu.Item>
-          <Menu.Item key="2" icon={<MdPayment />}>
-          <Link to='/payment'>
+          {/* <Menu.Item key="2" icon={<MdPayment />}>
+            <Link to='/payment'>
               Payment
             </Link>
-          </Menu.Item>
+          </Menu.Item> */}
           <Menu.Item key="3" icon={<TableOutlined />}>
             <Link to='/user'>
               Clinic
-            </Link> 
+            </Link>
           </Menu.Item>
-          <Menu.Item key="sub1" icon={<SmileOutlined />}>
-          <Link to='/profile'>
+          {/* <Menu.Item key="sub1" icon={<SmileOutlined />}>
+            <Link to='/profile'>
               Profile
             </Link>
           </Menu.Item>
           <Menu.Item key="sub2" icon={<MdManageAccounts />}>
-          <Link to='/account'>
+            <Link to='/account'>
               Manage Account
             </Link>
           </Menu.Item>
           <Menu.Item key="sub3" icon={<ToolOutlined />}>
-          <Link to='/tools'>
+            <Link to='/tools'>
               Tools
             </Link>
           </Menu.Item>
           <Menu.Item key="sub4" icon={<PushpinOutlined />}>
-          <Link to='/resouce'>
+            <Link to='/resouce'>
               Resource
             </Link>
-          </Menu.Item>
+          </Menu.Item> */}
         </Menu>
         <div className="logout-menu">
           <Divider />

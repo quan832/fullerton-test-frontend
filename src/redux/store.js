@@ -12,7 +12,7 @@ import createSagaMiddleware from '@redux-saga/core';
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: []
+  whitelist: ["dashboard"]
 };
 
 const composeEnhancers = window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] || compose;

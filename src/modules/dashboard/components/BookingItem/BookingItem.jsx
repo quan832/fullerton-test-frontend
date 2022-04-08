@@ -11,11 +11,12 @@ import {
   BookingItemStyled
 } from './BookingItem.styled';
 
-export default function BookingItem({ id, title, status, subTitle }) {
+export default function BookingItem({ id, title, status, subTitle, onClick }) {
   const dispatch = useDispatch();
 
   const onOpenModal = () => {
-    dispatch(DashboardAction.openBookingModal(id, TYPE_MODAL.edit));
+    // dispatch(DashboardAction.openBookingModal(id, TYPE_MODAL.edit));
+    onClick()
   };
 
   const progress = PROGRESS_STATUS(status);

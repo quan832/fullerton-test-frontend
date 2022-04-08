@@ -29,6 +29,7 @@ function removeAccessToken() {
   const loggedIn = 'false';
   localStorage.setItem('logged-in', loggedIn);
   sessionStorage.setItem('logged-in', loggedIn);
+  localStorage.clear();
 }
 
 export function getUserInfo() {

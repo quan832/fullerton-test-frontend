@@ -4,7 +4,7 @@ import { Field, Form, Formik } from 'formik';
 import React, { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { DatePickerAntd, FormGroup, InputAntd, LabelStyled } from 'stylesheet/Input/Input.styled';
-import DashboardAction from './../../actions/dashboardAction';
+import DashboardAction from '../../actions/dashboardAction';
 import moment from 'moment';
 import { FORMAT_DATE, STATUS, TYPE_MODAL } from 'utils/ENUM';
 import { ButtonStyled } from 'stylesheet/Button/Button.styled';
@@ -94,7 +94,7 @@ const BookingSchema = Yup.object().shape({
   category: Yup.string().required('Category is required')
 });
 
-export default function BookingModal({ isOpen, closeModal, id, type, openBookingModalDate }) {
+export default function BookingModalEdit({ isOpen, closeModal, id, type, value }) {
   const dispatch = useDispatch();
 
   const {
@@ -103,6 +103,20 @@ export default function BookingModal({ isOpen, closeModal, id, type, openBooking
     bookingModal: { isOpenModal }
   } = useSelector((state) => state.dashboard);
 
+  // const initialValue = {
+  //   title: '',
+  //   place: '',
+  //   status: STATUS.pending,
+  //   date: [getDateNow(), getDateNow(), getDateNow()],
+  //   category: categoryOptions[0]?.title,
+  //   phone: '',
+  //   why: '',
+  // };
+
+  const onDelete = (item) => {
+    dispatch(DashboardAction.deleteBooking(item))
+    closeModal()
+  }
 
   const providerOptions = [
     {
@@ -120,97 +134,27 @@ export default function BookingModal({ isOpen, closeModal, id, type, openBooking
       id: 4,
       title: "Bệnh viện An Bình",
     }
+
   ]
 
-  const initialValue = {
-    title: '',
-    place: '',
-    status: STATUS.pending,
-    // date: [getDateNow(), getDateNow(), getDateNow()],
-    category: categoryOptions[0]?.title,
-    phone: '',
-    why: '',
-    provider: providerOptions[0]?.title
-  };
-
-
-  const [initialValues, setValues] = useState(initialValue);
-
-  React.useEffect(() => {
-    setValues({ ...initialValues, category: categoryOptions[0]?.title });
-  }, [categoryOptions]);
-
-  React.useEffect(() => {
-    setValues(initialValue);
-  }, [isOpenModal]);
-
-  const formRef = useRef(null);
-
-  const onSetDate = (value, index) => {
-    let newDate = [...initialValues.date];
-    newDate[index] = value;
-
-    setValues({ ...initialValues, date: newDate });
-  };
-
-  const onChangeCategory = (index) => {
-    setValues({ ...initialValues, category: categoryOptions[index].title });
-  };
-
-  const onChangeProvider = (index) => {
-    setValues({ ...initialValues, provider: providerOptions[index].title });
-  };
-
-  const onSubmit = () => {
-    // if (!isEditModal(type)) dispatch(DashboardAction.createBooking(initialValues));
-
-    // 
-
-
-    // reset
-    setValues({ ...initialValue });
-    dispatch(DashboardAction.createBookingStep1(initialValues));
-    closeModal()
-    openBookingModalDate()
-
-  };
-
-  const onCreateCategory = (payload) => {
-    dispatch(DashboardAction.createCategory(payload));
-  };
-
-  const onDelete = () => {
-    dispatch(DashboardAction.deleteBooking(id));
-  };
-
-  let bookingItem;
-  if (id) {
-    bookingItem = data.find((item) => item.id === id);
-  }
-
-  const onFetchCategoryOptions = () => {
-    dispatch(DashboardAction.fetchCategoryOptions());
-  };
-
-  React.useEffect(() => {
-    onFetchCategoryOptions();
-  }, []);
+  const [initialValues, setValues] = useState(value);
 
   return (
     <Modal
-      title={`${type} Booking Modal (STEP 1)`}
+      title={`${type} Booking Modal`}
       width={850}
       visible={isOpen}
       centered
       onCancel={closeModal}
-      onOk={onSubmit}>
+      onOk={closeModal}
+    >
       <Formik
-        initialValues={initialValues}
+        // initialValues={initialValues}
         onSubmit={(values, { resetForm }) => {
           resetForm();
         }}
-        innerRef={formRef}
-        validationSchema={BookingSchema}>
+      // innerRef={formRef}
+      >
         {({ handleSubmit, handleBlur }) => (
           <Form onSubmit={handleSubmit}>
             <FormGroup>
@@ -223,13 +167,9 @@ export default function BookingModal({ isOpen, closeModal, id, type, openBooking
                       id="title"
                       small
                       {...field}
-                      value={isEditModal(type) ? bookingItem.title : initialValues.title}
+                      value={initialValues.title}
                       disabled={isEditModal(type)}
                       onBlur={handleBlur}
-                      onChange={(e) => {
-                        const value = e.currentTarget.value;
-                        setValues({ ...initialValues, title: value });
-                      }}
                     />
                   </>
                 )}
@@ -247,14 +187,15 @@ export default function BookingModal({ isOpen, closeModal, id, type, openBooking
                           id="place"
                           small
                           disabled={isEditModal(type)}
-                          {...field}
-                          value={isEditModal(type) ? bookingItem.place : initialValues.place}
-                          onChange={(e) => {
-                            // console.log(e);
-                            const value = e.currentTarget.value;
-                            setValues({ ...initialValues, place: value });
-                          }}
-                          onBlur={handleBlur}
+                          value={initialValues.place}
+                        // {...field}
+                        // value={isEditModal(type) ? bookingItem.place : initialValues.place}
+                        // onChange={(e) => {
+                        //   // console.log(e);
+                        //   const value = e.currentTarget.value;
+                        //   setValues({ ...initialValues, place: value });
+                        // }}
+                        // onBlur={handleBlur}
                         />
                       </>
                     )}
@@ -272,14 +213,15 @@ export default function BookingModal({ isOpen, closeModal, id, type, openBooking
                           id="phone"
                           small
                           disabled={isEditModal(type)}
-                          {...field}
-                          value={isEditModal(type) ? bookingItem.phone : initialValues.phone}
-                          onChange={(e) => {
-                            // console.log(e);
-                            const value = e.currentTarget.value;
-                            setValues({ ...initialValues, phone: value });
-                          }}
-                          onBlur={handleBlur}
+                          value={initialValues.phone}
+                        // {...field}
+                        // value={isEditModal(type) ? bookingItem.place : initialValues.place}
+                        // onChange={(e) => {
+                        //   // console.log(e);
+                        //   const value = e.currentTarget.value;
+                        //   setValues({ ...initialValues, phone: value });
+                        // }}
+                        // onBlur={handleBlur}
                         />
                       </>
                     )}
@@ -299,14 +241,15 @@ export default function BookingModal({ isOpen, closeModal, id, type, openBooking
                           id="why"
                           small
                           disabled={isEditModal(type)}
+                          value={initialValues.why}
                           {...field}
-                          value={isEditModal(type) ? bookingItem.why : initialValues.why}
-                          onChange={(e) => {
-                            // console.log(e);
-                            const value = e.currentTarget.value;
-                            setValues({ ...initialValues, why: value });
-                          }}
-                          onBlur={handleBlur}
+                        // value={isEditModal(type) ? bookingItem.place : initialValues.place}
+                        // onChange={(e) => {
+                        //   // console.log(e);
+                        //   const value = e.currentTarget.value;
+                        //   setValues({ ...initialValues, why: value });
+                        // }}
+                        // onBlur={handleBlur}
                         />
                       </>
                     )}
@@ -325,13 +268,12 @@ export default function BookingModal({ isOpen, closeModal, id, type, openBooking
                           name="provider"
                           id="provider"
                           small
-                          defaultValue={
-                            isEditModal(type) ? bookingItem.place : providerOptions[0]?.title
-                          }
-                          options={providerOptions}
-                          // isMoreDropdown={true}
+                          defaultValue={initialValues?.provider}
+                          options={[]}
+                          isMoreDropdown={false}
                           disabled={isEditModal(type)}
-                          onChangeDropDown={onChangeProvider}
+                          onChangeDropDown={() => { }}
+                          // onChangeDropDown={onChangeCategory}
                           // actionSubmitMore={onCreateCategory}
                           onBlur={handleBlur}
                           {...field}
@@ -353,14 +295,12 @@ export default function BookingModal({ isOpen, closeModal, id, type, openBooking
                           name="category"
                           id="category"
                           small
-                          defaultValue={
-                            isEditModal(type) ? bookingItem.place : categoryOptions[0]?.title
-                          }
-                          options={categoryOptions}
-                          isMoreDropdown={true}
+                          defaultValue={initialValues?.category}
+                          options={[]}
+                          isMoreDropdown={false}
                           disabled={isEditModal(type)}
-                          onChangeDropDown={onChangeCategory}
-                          actionSubmitMore={onCreateCategory}
+                          onChangeDropDown={() => { }}
+                          // actionSubmitMore={onCreateCategory}
                           onBlur={handleBlur}
                           {...field}
                         />
@@ -371,6 +311,19 @@ export default function BookingModal({ isOpen, closeModal, id, type, openBooking
               </Col>
             </Row>
 
+            <LabelStyled>
+              Date booking
+            </LabelStyled>
+            <DatePickerAntd
+              name={`date`}
+              id={`date`}
+              small
+              // disabledDate={disabledDate}
+              // onChange={!isDisabled ? (date, dateString) => setValue(dateString, index) : null}
+              disabled={true}
+              format={'DD/MM/YYYY hh:mm a'}
+              defaultValue={moment(`${initialValues.date[0]}${" "}${initialValues.time}`, 'DD/MM/YYYY hh:mm a')}
+            />
             {/* {renderProposedDate(
               isEditModal(type) ? bookingItem.date : initialValues.date,
               isEditModal(type),
@@ -382,6 +335,15 @@ export default function BookingModal({ isOpen, closeModal, id, type, openBooking
                 Delete <DeleteOutlined />
               </ButtonStyled>
             ) : null} */}
+
+            {isEditModal(type) ? (
+              <ButtonStyled onClick={(e) => {
+                e.preventDefault()
+                onDelete(initialValues)
+              }} dangerText className="mt-25" w100 input>
+                Delete <DeleteOutlined />
+              </ButtonStyled>
+            ) : null}
           </Form>
         )}
       </Formik>

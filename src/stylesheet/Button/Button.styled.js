@@ -35,32 +35,33 @@ export const ButtonStyled = styled.button`
       }
     `}
 
-  ${(props) =>
-    props.purple &&
-    css`
-      background: #a435f0;
-      color: #fff;
-      font-weight: 700;
 
-      &:hover {
-        opacity: 50%;
-        background-color: #2f2a66;
-      }
-    `}
 
     ${(props) =>
     props.purpleGhost &&
     css`
-      color: #5624d0;
+      color: #5624d0!important;
       font-weight: 700;
       background-color: transparent;
-      padding: 0;
+      // padding: 0;
       &:hover {
-        color: #401b9c;
+        color: #401b9c!important;
       }
     `}
 
-     
+      ${(props) =>
+    props.purple &&
+    css`
+      background: #a435f0!important;
+      color: #fff!important;
+      font-weight: 700;
+
+      &:hover {
+        opacity: 50%;
+        background-color: #2f2a66!important;
+      }
+    `}
+
 
   ${(props) =>
     props.input &&
@@ -99,5 +100,12 @@ export const ButtonStyled = styled.button`
         background-color: #e2e6ea;
         border-color: #dae0e5;
       }
+    `}
+
+
+  ${(props) =>
+    props.marginLeftRight &&
+    css`
+      margin: 0 10px 10px!important;
     `}
 `;
