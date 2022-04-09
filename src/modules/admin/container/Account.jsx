@@ -3,8 +3,19 @@ import { DashboardContainerStyled } from 'modules/dashboard/container/DashboardC
 import React from 'react'
 import AccountManagementTable from '../components/AccountManagementTable/AccountManagementTable'
 import SearchBarHeader from '../components/searchBar/SearchBarHeader'
-
+import AdminAction from '../actions/adminAction';
+import { useDispatch, useSelector } from 'react-redux'
 export default function Account() {
+    const dispatch = useDispatch()
+    const fetchUsers = () => {
+        dispatch(AdminAction.fetchUsers())
+    }
+
+    React.useEffect(() => {
+        fetchUsers()
+    }, [])
+
+
     return (
         <DashboardContainerStyled>
             <Header title="Account Management" />

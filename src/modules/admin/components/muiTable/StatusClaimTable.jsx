@@ -4,7 +4,7 @@ const StatusClaimTable = (props) => {
     const [statusClass, setStatusClass] = useState("");
     useEffect(() => {
         switch (props.status) {
-            case 'APPROVED':
+            case 'APPROVE':
                 return setStatusClass('approved');
             case 'PENDING':
                 return setStatusClass('pending');

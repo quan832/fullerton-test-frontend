@@ -74,7 +74,7 @@ const ViewAccountDialog = (props) => {
     setOpen(props.openDialog);
     setUser(props.selectedUser)
 
-  }, [props.openDialog,props.selectedUser]);
+  }, [props.openDialog, props.selectedUser]);
 
   const closeModal = () => {
     props.callBackClose();
@@ -92,6 +92,12 @@ const ViewAccountDialog = (props) => {
     >
       <BootstrapDialogTitle
         id="customized-view-account-dialog-title"
+        style={{
+          padding: '16px 24px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}
         onClose={closeModal}
       >
         User Detail
@@ -101,7 +107,7 @@ const ViewAccountDialog = (props) => {
           <Grid item xs={6} md={4}>
             <Stack direction="column" m={1}>
               <p className="title-view-account-dialog">USERNAME *</p>
-              <p className="body-view-account-dialog">{user.username}</p>
+              <p className="body-view-account-dialog">{user.name}</p>
             </Stack>
           </Grid>
 
@@ -109,7 +115,7 @@ const ViewAccountDialog = (props) => {
             <Stack direction="column" m={1}>
               <p className="title-view-account-dialog">EMAIL *</p>
               <p className="body-view-account-dialog">
-              {user.email}
+                {user.email}
               </p>
             </Stack>
           </Grid>
@@ -117,7 +123,7 @@ const ViewAccountDialog = (props) => {
           <Grid item xs={4} mb={2}>
             <Stack direction="column" m={1}>
               <p className="title-view-account-dialog">ROLE ID *</p>
-              <p className="body-view-account-dialog">{user.roleId}</p>
+              <p className="body-view-account-dialog">{user.role}</p>
             </Stack>
           </Grid>
           <Grid item xs={4} mb={2}>
@@ -129,7 +135,7 @@ const ViewAccountDialog = (props) => {
           <Grid item xs={4} mb={2}>
             <Stack direction="column" m={1}>
               <p className="title-view-account-dialog">WHITE LABEL</p>
-              <p className="body-view-account-dialog">fullerton health group</p>
+              <p className="body-view-account-dialog">#FFFFFF</p>
             </Stack>
           </Grid>
 
@@ -155,14 +161,14 @@ const ViewAccountDialog = (props) => {
         </Grid>
       </DialogContent>
       <DialogActionsStyled>
-      <Button autoFocus >
-          <i className="ri-edit-2-line" /> Edit
+        <Button autoFocus >
+          <i className="fas fa-edit" /> Edit
         </Button>
         <Button autoFocus color="secondary">
-          <i className="ri-key-2-line" /> Reset Password
+          <i className="fas fa-key" /> Reset Password
         </Button>
         <Button autoFocus color="error">
-          <i className="ri-user-unfollow-line" /> Suspend
+          <i className="fas fa-user-slash" /> Suspend
         </Button>
 
         <div style={{ flex: "1 0 0" }} />

@@ -6,7 +6,10 @@ const initialState = {
   data: [],
   total: null,
   page: 1,
-  isFetching: false
+  isFetching: false,
+  accountManagement: {
+    data: []
+  }
 };
 
 const adminReducer = (state = initialState, { type, payload }) => {
@@ -17,6 +20,20 @@ const adminReducer = (state = initialState, { type, payload }) => {
         isOpenModal: true,
         bookingIdReject: payload.id
       };
+    case AdminAction.GET_USERS.REQUEST:
+      return {
+        ...state,
+        isFetching: true,
+      }
+    case AdminAction.GET_USERS.SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        accountManagement: {
+          ...state.accountManagement,
+          data: payload.data
+        }
+      }
     case CLOSE_MODAL:
       return {
         ...state,

@@ -77,7 +77,7 @@ const EditAccountDialog = (props) => {
   };
   
   const handleClose = () => {
-    props.closeAddAccountDialog();
+    // props.closeAddAccountDialog();
   };
 
   useEffect(() => {
@@ -253,14 +253,4 @@ const EditAccountDialog = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    data: {
-      openAddAccountDialog: state.account.openAddAccountDialog,
-      roleCounts: state.account.roleCounts,
-      roles: state.account.roles,
-    },
-  };
-};
-
-export default connect(mapStateToProps)(EditAccountDialog);
+export default EditAccountDialog;

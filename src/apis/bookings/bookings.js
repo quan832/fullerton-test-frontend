@@ -15,7 +15,7 @@ const createBooking = (data) => {
 };
 
 const updateBookingStatus = ({ id, dateId, status }) => {
-  const data ={dateId,status}
+  const data = { dateId, status }
   return axios.put(`/bookings/${id}/status`, data);
 };
 

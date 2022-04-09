@@ -109,15 +109,15 @@ const AddAccountDialog = (props) => {
   return (
     <div className="dialog-add">
       <BootstrapDialog
-        onClose={handleClose}
-        open={open}
+        onClose={props.closeModal}
+        open={props.openModal}
         maxWidth="md"
         fullWidth={true}
         aria-labelledby="customized-add-account-dialog-title"
       >
         <BootstrapDialogTitle
           id="customized-add-account-dialog-title"
-          onClose={handleClose}
+          onClose={props.closeModal}
         >
           Add User
         </BootstrapDialogTitle>
@@ -257,7 +257,7 @@ const AddAccountDialog = (props) => {
           </Grid>
         </DialogContent>
         <DialogActionsStyled>
-          <Button variant="outlined" onClick={handleClose}>
+          <Button variant="outlined" onClick={props.closeModal}>
             Cancel
           </Button>
           <Button

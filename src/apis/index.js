@@ -7,6 +7,7 @@ import accountAPI from './auth/auth';
 import bookingAPI from './bookings/bookings';
 import categoriesAPI from './categories/categories';
 import feedbackAPI from './feedback/feedback';
+import accountManagementAPI from './account/account'
 import { handleLogout } from 'routes/routes';
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
@@ -138,4 +139,4 @@ export function getErrorMessage(error) {
   return message;
 }
 
-export const API = { accountAPI, bookingAPI, categoriesAPI, feedbackAPI };
+export const API = { accountAPI, bookingAPI, categoriesAPI, feedbackAPI, accountManagementAPI };

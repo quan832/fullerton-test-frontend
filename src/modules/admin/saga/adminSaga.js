@@ -1,10 +1,11 @@
-import { all, call, fork, put, select, takeLatest } from '@redux-saga/core/effects';
+import { all, call, fork, put, select, takeLatest, delay } from '@redux-saga/core/effects';
 import { Message } from 'utils/Message';
 import { errorNotification, getError, successNotification } from 'utils/Notifcation';
 import { API } from 'apis/index';
 import AdminAction, {
   CREATE_FEEDBACK,
   FETCH_BOOKINGS,
+  GET_USERS,
   UPDATE_BOOKING
 } from '../actions/adminAction';
 import { STATUS } from 'utils/ENUM';
@@ -32,6 +33,31 @@ function* fetchListBookings({ payload }) {
     errorNotification(getError(error));
   }
 }
+
+
+function* fetchAllUsers({ payload }) {
+  try {
+    // const { page = 1, perPage = 8 } = payload;
+    yield put({ type: AdminAction.GET_USERS.REQUEST });
+
+    const {
+      data: { data }
+    } = yield call(API.accountManagementAPI.getUsers);
+
+    yield delay(500)
+    yield put({
+      type: AdminAction.GET_USERS.SUCCESS,
+      payload: {
+        data,
+        total: data?.length
+      }
+    });
+
+  } catch (error) {
+    errorNotification(getError(error));
+  }
+}
+
 
 function* createFeedback(id, description) {
   try {
@@ -65,7 +91,7 @@ function* updateBooking({ payload }) {
   try {
     const { id, status = null, dateId = null, description } = payload;
     yield put({ type: AdminAction.UPDATE_BOOKING.REQUEST });
-
+    console.log(id)
     const {
       data: { message }
     } = yield call(API.bookingAPI.updateBookingStatus, { id, status, dateId });
@@ -87,6 +113,7 @@ function* updateBooking({ payload }) {
   }
 }
 
+
 function* watchFetchListBookings() {
   yield takeLatest(FETCH_BOOKINGS, fetchListBookings);
 }
@@ -99,6 +126,10 @@ function* watchCreateFeedback() {
   yield takeLatest(CREATE_FEEDBACK, createFeedback);
 }
 
+function* watchGetAllUsers() {
+  yield takeLatest(GET_USERS, fetchAllUsers);
+}
+
 export default function* adminSaga() {
-  yield all([watchFetchListBookings(), watchUpdateBooking(), watchCreateFeedback()]);
+  yield all([watchFetchListBookings(), watchUpdateBooking(), watchCreateFeedback(), watchGetAllUsers()]);
 }

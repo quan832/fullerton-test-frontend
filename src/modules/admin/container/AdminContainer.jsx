@@ -104,6 +104,10 @@ export default function AdminContainer() {
     dispatch(AdminAction.openModal(id));
   };
 
+  const onApprove = (id, status) => {
+    dispatch(AdminAction.updateBooking(id, { dateId: id}));
+  };
+
   const columns = React.useMemo(() => [
     {
       Header: (tableInstance) => {
@@ -207,11 +211,19 @@ export default function AdminContainer() {
         return (
           <div className="react-action-class wide-cell">
             {tableInstance.cell.row.original?.status === STATUS.pending ? (
-              <button
-                className="react-table-view-button"
-                onClick={() => toggleModal(typeModal.view, value)}>
-                <i className="fas fa-square-check" />
-              </button>
+              <Popconfirm
+                title="Are you sure approve this booking?"
+                onConfirm={() => onApprove(tableInstance.cell.row.original?.id)}
+                // onCancel={cancel}
+                okText="Yes"
+                cancelText="No">
+                <button
+                  className="react-table-view-button"
+                >
+                  <i className="fas fa-square-check" />
+                </button>
+              </Popconfirm>
+
             ) : (
               null
             )}

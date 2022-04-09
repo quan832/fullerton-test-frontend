@@ -15,10 +15,22 @@ export const CREATE_FEEDBACK_REQUEST = `${store}/CREATE_FEEDBACK_REQUEST`;
 export const CREATE_FEEDBACK_SUCCESS = `${store}/CREATE_FEEDBACK_SUCCESS`;
 export const CREATE_FEEDBACK_ERROR = `${store}/CREATE_FEEDBACK_ERROR`;
 
+export const GET_USERS = `${store}/GET_USERS`;
+export const GET_USERS_REQUEST = `${store}/GET_USERS_REQUEST`;
+export const GET_USERS_SUCCESS = `${store}/GET_USERS_SUCCESS`;
+export const GET_USERS_ERROR = `${store}/GET_USERS_ERROR`;
+
 export const OPEN_MODAL = `${store}/OPEN_MODAL`;
 export const CLOSE_MODAL = `${store}/CLOSE_MODAL`;
 
 export default class AdminAction {
+
+  static GET_USERS = {
+    REQUEST: GET_USERS_REQUEST,
+    SUCCESS: GET_USERS_SUCCESS,
+    ERROR: GET_USERS_ERROR
+  };
+
   static FETCH_BOOKINGS = {
     REQUEST: FETCH_BOOKINGS_REQUEST,
     SUCCESS: FETCH_BOOKINGS_SUCCESS,
@@ -47,6 +59,13 @@ export default class AdminAction {
   static fetchBookings(payload) {
     return {
       type: FETCH_BOOKINGS,
+      payload: payload
+    };
+  }
+
+  static fetchUsers(payload) {
+    return {
+      type: GET_USERS,
       payload: payload
     };
   }

@@ -25,6 +25,7 @@ import SearchBarHeader from "../searchBar/SearchBarHeader";
 // const { suspendUser, getUserByFilter, openAddAccountDialog, getAllRoles, getLabelSettings } = userActions;
 // const { sendResetPassword } = auActions;
 import ScopedCssBaseline from '@mui/material/ScopedCssBaseline';
+import { useDispatch, useSelector } from 'react-redux'
 
 const HeaderComponent = (props) => {
   let classes = {
@@ -41,7 +42,7 @@ const HeaderComponent = (props) => {
 };
 
 const AccountManagementTable = (props) => {
-  const [tableData, setTableData] = useState([]);
+  const { data: tableData } = useSelector((state) => state.admin.accountManagement)
   const [selectedUser, setSelectedUser] = useState(null);
   const [viewMode, setViewMode] = useState(false);
   const [editMode, setEditMode] = useState(false);
@@ -50,6 +51,7 @@ const AccountManagementTable = (props) => {
   const [alertReset, setAlertReset] = useState(false);
   const [viewDetail, setViewDetail] = useState(false);
   const [viewSuspend, setViewSuspend] = useState(false);
+  const [addUserModal, setAddUserModal] = useState(false);
   const [viewResetPassword, setViewResetPassword] = useState(false);
   const [viewEdit, setViewEdit] = useState(false);
 
@@ -134,7 +136,7 @@ const AccountManagementTable = (props) => {
             />
           );
         },
-        accessor: "username",
+        accessor: "name",
         align: "center",
         width: 55,
       },
@@ -143,26 +145,12 @@ const AccountManagementTable = (props) => {
           return (
             <HeaderComponent
               isSortedDesc={tableInstance.column.isSortedDesc}
-              title="Role Id"
+              title="Role"
               id="user.roleID"
             />
           );
         },
-        accessor: "roleId",
-        align: "center",
-        width: 55,
-      },
-      {
-        Header: (tableInstance) => {
-          return (
-            <HeaderComponent
-              isSortedDesc={tableInstance.column.isSortedDesc}
-              title="Type"
-              id="user.type"
-            />
-          );
-        },
-        accessor: "type",
+        accessor: "role",
         align: "center",
         width: 55,
       },
@@ -176,7 +164,7 @@ const AccountManagementTable = (props) => {
             />
           );
         },
-        accessor: "mainColor",
+        accessor: "whiteLabelId",
         align: "center",
         width: 55,
       },
@@ -201,38 +189,33 @@ const AccountManagementTable = (props) => {
                   className="react-table-view-button"
                   onClick={() => viewClick(tableInstance.row.original)}
                 >
-                  <i className="ri-eye-line"></i>
+                  <i className="fas fa-eye"></i>
                 </button>
               </Tooltip>
-
-
               <Tooltip title="Edit User" placement="top" arrow>
                 <button
                   className="react-table-edit-button"
                   onClick={() => editClick(tableInstance.row.original)}
                 >
-                  <i className="ri-edit-2-line"></i>
+                  <i className="fas fa-edit"></i>
                 </button>
               </Tooltip>
-
               <Tooltip title="Reset Password" placement="top" arrow>
                 <button
                   className="react-table-reset-button"
                   onClick={() => resetPwClick(tableInstance.row.original)}
                 >
-                  <i className="ri-key-2-line"></i>
+                  <i className="fas fa-key"></i>
                 </button>
               </Tooltip>
-
               <Tooltip title="Suspend" placement="top" arrow>
                 <button
                   className="react-table-suspend-button"
                   onClick={() => suspendClick(tableInstance.row.original)}
                 >
-                  <i className="ri-user-unfollow-line"></i>
+                  <i className="fas fa-user-slash"></i>
                 </button>
               </Tooltip>
-
             </div>
           );
         },
@@ -248,8 +231,6 @@ const AccountManagementTable = (props) => {
   const viewClick = (data) => {
     // Here you can view the data and make forward action for view data
     setSelectedUser(data);
-
-    console.log(data);
     setViewDetail(true);
   };
 
@@ -386,8 +367,8 @@ const AccountManagementTable = (props) => {
   const openAddAccount = () => {
     // Here you can view the data and make forward action for view data
     // props.openAddAccountDialog();
-
-    toast.success("User added successfully");
+    setAddUserModal(true)
+    // toast.success("User added successfully");
   };
   return (
     <>
@@ -435,7 +416,7 @@ const AccountManagementTable = (props) => {
           Add User
         </ButtonStyled>
       </div>
-      <AddAccountDialog />
+      <AddAccountDialog openModal={addUserModal} closeModal={() => setAddUserModal(false)} />
 
       {selectedUser && (
         <ViewAccountDialog
