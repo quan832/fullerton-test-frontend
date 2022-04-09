@@ -10,6 +10,7 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
 import { toast } from "react-toastify";
+import { ButtonStyled } from "stylesheet/Button/Button.styled";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -83,17 +84,18 @@ const ResetPasswordAccountDialog = (props) => {
         </Typography>
       </DialogContent>
       <DialogActionsStyled>
-        <Button
+        <ButtonStyled
           variant="outlined"
           autoFocus
           onClick={closeModal}
           color="primary"
+          purpleGhost
         >
           Cancel
-        </Button>
-        <Button variant="contained" onClick={handleResetPassword}>
+        </ButtonStyled>
+        <ButtonStyled purple variant="contained" onClick={handleResetPassword}>
           Yes, send it!
-        </Button>
+        </ButtonStyled>
       </DialogActionsStyled>
     </BootstrapDialog>
   );

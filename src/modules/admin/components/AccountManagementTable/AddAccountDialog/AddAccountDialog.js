@@ -11,7 +11,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import { Grid, MenuItem, Paper } from "@material-ui/core";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import {
   FormControlLabel,
   Radio,
@@ -22,6 +22,8 @@ import {
 import { debounce } from "@material-ui/core";
 import { toast } from "react-toastify";
 import * as yup from 'yup';
+import { ButtonStyled } from "stylesheet/Button/Button.styled";
+import AdminAction from "modules/admin/actions/adminAction";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -63,34 +65,35 @@ const DialogActionsStyled = styled(DialogActions)(({ theme }) => ({
 }));
 
 const schemaAddUser = yup.object().shape({
-  username: yup.string().required(),
+  name: yup.string().required(),
   email: yup.string().email(),
   roleId: yup.string().required(),
   whiteLabelId: yup.string().required(),
-  type: yup.string().required()
 });
 
 const AddAccountDialog = (props) => {
   const [open, setOpen] = React.useState(false);
 
   const initialValues = {
-    username: null,
+    name: null,
     email: null,
     roleId: null,
-    type: null,
     whiteLabelId: null,
   }
   const [valuesSubmit, setValuesSubmit] = React.useState(initialValues)
 
   const handleChangeSubmit = (event, key) => {
+    disabled()
     setValuesSubmit({
       ...valuesSubmit, [key]: event.target.value
     });
   };
+  const dispatch = useDispatch()
 
   const onSubmit = () => {
     console.log(valuesSubmit)
-    toast.success("User added successfully");
+    dispatch(AdminAction.createAccount(valuesSubmit))
+    props.closeModal()
   }
 
   const handleClose = () => {
@@ -101,8 +104,13 @@ const AddAccountDialog = (props) => {
   //   setOpen(props.data.openAddAccountDialog);
   // }, [props.data.openAddAccountDialog]);
 
-  const disabled = schemaAddUser.isValid(valuesSubmit).then(function (valid) { return valid }).catch((error) => toast.error(error))
-  console.log(disabled)
+  const [disabledCallBack, setDisabledCallBack] = React.useState(true)
+  const disabled = React.useCallback(async () => {
+    const callbackDisabled = await schemaAddUser.isValid(valuesSubmit)
+    setDisabledCallBack(!callbackDisabled)
+  }, [valuesSubmit.name, valuesSubmit.email, valuesSubmit.roleId, valuesSubmit.whiteLabelId])
+
+  // console.log(disabled)
   return (
     <div className="dialog-add">
       <BootstrapDialog
@@ -120,7 +128,7 @@ const AddAccountDialog = (props) => {
         </BootstrapDialogTitle>
         <DialogContent dividers>
           <Grid container>
-            <Grid item xs={6}>
+            <Grid item xs={12}>
               <Stack direction="column" m={1}>
                 <Typography variant="subtitle2" color="#566371">
                   USERNAME *
@@ -128,7 +136,7 @@ const AddAccountDialog = (props) => {
                 <TextField
                   variant="outlined"
                   placeholder="Ex: firstname.lastname"
-                  onChange={(e) => handleChangeSubmit(e, 'username')}
+                  onChange={(e) => handleChangeSubmit(e, 'name')}
                   sx={{
                     "& label.Mui-focused": {
                       display: "none",
@@ -144,7 +152,7 @@ const AddAccountDialog = (props) => {
               </Stack>
             </Grid>
 
-            <Grid item xs={6}>
+            <Grid item xs={12}>
               <Stack direction="column" m={1}>
                 <Typography variant="subtitle2" color="#566371">
                   EMAIL *
@@ -194,36 +202,11 @@ const AddAccountDialog = (props) => {
                   {/* {props.data.roles?.map((item, index) => {
                     return <MenuItem value={item.objectId}>{item.name}</MenuItem>
                   })} */}
-                  <MenuItem value={'Admin'}>Admin</MenuItem>
+                  <MenuItem value={'ADMIN'}>Admin</MenuItem>
+                  <MenuItem value={'USER'}>User</MenuItem>
                 </Select>
               </Stack>
             </Grid>
-
-            <Grid item xs={6}>
-              <Stack direction="column" m={1}>
-                <Typography variant="subtitle2" color="#566371" mb={1}>
-                  TYPE *
-                </Typography>
-                <RadioGroup
-                  row
-                  aria-labelledby="demo-row-radio-buttons-group-label"
-                  name="row-radio-buttons-group"
-                  onChange={(e) => handleChangeSubmit(e, 'type')}
-                >
-                  <FormControlLabel
-                    value="Insurer brokers"
-                    control={<Radio />}
-                    label="Insurer"
-                  />
-                  <FormControlLabel
-                    value="Client"
-                    control={<Radio />}
-                    label="Clients"
-                  />
-                </RadioGroup>
-              </Stack>
-            </Grid>
-
             <Grid item xs={6}>
               <Stack direction="column" m={1}>
                 <Typography variant="subtitle2" color="#566371" mb={1}>
@@ -248,24 +231,26 @@ const AddAccountDialog = (props) => {
                   {/* {props.data.labelSetting?.map((item, index) => {
                     return <MenuItem value={item.objectId}>{item.name} {item.mainColor}</MenuItem>
                   })} */}
+                  <MenuItem value={'#FFFFFF'}>#FFFFFF</MenuItem>
                 </Select>
               </Stack>
             </Grid>
           </Grid>
         </DialogContent>
         <DialogActionsStyled>
-          <Button variant="outlined" onClick={props.closeModal}>
+          <ButtonStyled purpleGhost variant="outlined" onClick={props.closeModal}>
             Cancel
-          </Button>
-          <Button
+          </ButtonStyled>
+          <ButtonStyled
+            purple
             variant="contained"
             autoFocus
             onClick={onSubmit}
             color="primary"
-            disabled={disabled}
+            disabled={disabledCallBack}
           >
             Add
-          </Button>
+          </ButtonStyled>
         </DialogActionsStyled>
       </BootstrapDialog>
     </div>

@@ -91,14 +91,14 @@ export const ButtonStyled = styled.button`
      ${(props) =>
     props.disabled &&
     css`
-      cursor: not-allowed;
-      background-color: #e4e6ef;
-      border-color: #e4e6ef;
-      color: #000000;
+      cursor: not-allowed!important;
+      background-color: #e4e6ef!important;
+      border-color: #e4e6ef!important;
+      color: #000000!important;
       &:hover {
-        color: #212529;
-        background-color: #e2e6ea;
-        border-color: #dae0e5;
+        color: #212529!important;
+        background-color: #e2e6ea!important;
+        border-color: #dae0e5!important;
       }
     `}
 

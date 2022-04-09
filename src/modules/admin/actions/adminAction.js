@@ -15,6 +15,11 @@ export const CREATE_FEEDBACK_REQUEST = `${store}/CREATE_FEEDBACK_REQUEST`;
 export const CREATE_FEEDBACK_SUCCESS = `${store}/CREATE_FEEDBACK_SUCCESS`;
 export const CREATE_FEEDBACK_ERROR = `${store}/CREATE_FEEDBACK_ERROR`;
 
+export const CREATE_ACCOUNT = `${store}/CREATE_ACCOUNT`;
+export const CREATE_ACCOUNT_REQUEST = `${store}/CREATE_ACCOUNT_REQUEST`;
+export const CREATE_ACCOUNT_SUCCESS = `${store}/CREATE_ACCOUNT_SUCCESS`;
+export const CREATE_ACCOUNT_ERROR = `${store}/CREATE_ACCOUNT_ERROR`;
+
 export const GET_USERS = `${store}/GET_USERS`;
 export const GET_USERS_REQUEST = `${store}/GET_USERS_REQUEST`;
 export const GET_USERS_SUCCESS = `${store}/GET_USERS_SUCCESS`;
@@ -48,6 +53,19 @@ export default class AdminAction {
     SUCCESS: CREATE_FEEDBACK_SUCCESS,
     ERROR: CREATE_FEEDBACK_ERROR
   };
+
+  static CREATE_ACCOUNT = {
+    REQUEST: CREATE_ACCOUNT_REQUEST,
+    SUCCESS: CREATE_ACCOUNT_SUCCESS,
+    ERROR: CREATE_ACCOUNT_ERROR
+  };
+
+  static createAccount(data) {
+    return {
+      type: CREATE_ACCOUNT,
+      payload: { data }
+    };
+  }
 
   static createFeedback(id, description) {
     return {

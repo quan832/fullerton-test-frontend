@@ -14,6 +14,16 @@ const initialState = {
 
 const adminReducer = (state = initialState, { type, payload }) => {
   switch (type) {
+    case AdminAction.CREATE_ACCOUNT.SUCCESS:
+
+      console.log(payload)
+      return {
+        ...state,
+        accountManagement: {
+          ...state.accountManagement,
+          data: payload
+        }
+      }
     case OPEN_MODAL:
       return {
         ...state,

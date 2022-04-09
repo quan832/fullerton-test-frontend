@@ -64,7 +64,7 @@ const EditAccountDialog = (props) => {
   const [open, setOpen] = React.useState(false);
   const [user, setUser] = useState({});
   const [roles, setRoles] = React.useState([]);
-  const [whitelabels, setWhiteLabels] = React.useState([]);
+  const [whitelabels, setWhiteLabels] = React.useState('#FFFFFF');
 
   const handleChangeRole = (event) => {
     setRoles(event.target.value);
@@ -105,7 +105,7 @@ const EditAccountDialog = (props) => {
         </BootstrapDialogTitle>
         <DialogContent dividers>
           <Grid container>
-            <Grid item xs={6}>
+            <Grid item xs={12}>
               <Stack direction="column" m={1}>
                 <Typography variant="subtitle2" color="#566371">
                   USERNAME *
@@ -123,13 +123,13 @@ const EditAccountDialog = (props) => {
                     backgroundColor: "white",
                     paddingTop: "5px",
                   }}
-                  value={user.username}
+                  value={user.name}
                   size="small"
                 />
               </Stack>
             </Grid>
 
-            <Grid item xs={6}>
+            <Grid item xs={12}>
               <Stack direction="column" m={1}>
                 <Typography variant="subtitle2" color="#566371">
                   EMAIL *
@@ -159,7 +159,7 @@ const EditAccountDialog = (props) => {
                   ROLE ID *
                 </Typography>
                 <Select
-                  value={roles}
+                  value={user.type}
                   label="Role ID"
                   onChange={handleChangeRole}
                   sx={{
@@ -175,12 +175,14 @@ const EditAccountDialog = (props) => {
                   placeholder="Select a role"
                   size="small"
                 >
-                  <MenuItem value={user.roleId}>{user.roleId}</MenuItem>
+                  <MenuItem value={'ADMIN'}>Admin</MenuItem>
+                  <MenuItem value={'USER'}>User</MenuItem>
+
                 </Select>
               </Stack>
             </Grid>
 
-            <Grid item xs={6}>
+            {/* <Grid item xs={6}>
               <Stack direction="column" m={1}>
                 <Typography variant="subtitle2" color="#566371">
                   TYPE *
@@ -203,7 +205,7 @@ const EditAccountDialog = (props) => {
                   />
                 </RadioGroup>
               </Stack>
-            </Grid>
+            </Grid> */}
 
             <Grid item xs={6}>
               <Stack direction="column" m={1}>
@@ -226,7 +228,7 @@ const EditAccountDialog = (props) => {
                   placeholder="Select an item"
                   size="small"
                 >
-                  <MenuItem value="Fullerton Health">Fullerton Health</MenuItem>
+                  <MenuItem value="#FFFFFF">#FFFFFF</MenuItem>
                 </Select>
               </Stack>
             </Grid>

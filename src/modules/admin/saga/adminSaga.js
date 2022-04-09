@@ -3,14 +3,17 @@ import { Message } from 'utils/Message';
 import { errorNotification, getError, successNotification } from 'utils/Notifcation';
 import { API } from 'apis/index';
 import AdminAction, {
+  CREATE_ACCOUNT,
   CREATE_FEEDBACK,
   FETCH_BOOKINGS,
   GET_USERS,
   UPDATE_BOOKING
 } from '../actions/adminAction';
 import { STATUS } from 'utils/ENUM';
+import { toast } from 'react-toastify';
 
 const getListBookingAdmin = (state) => state.admin.data;
+const getListAccount = (state) => state.admin.accountManagement.data;
 
 function* fetchListBookings({ payload }) {
   try {
@@ -114,6 +117,36 @@ function* updateBooking({ payload }) {
 }
 
 
+function* createAccount({ payload }) {
+  try {
+    const { data } = payload
+    yield put({
+      type: AdminAction.CREATE_ACCOUNT.REQUEST,
+    });
+    const accountList = yield select(getListAccount)
+    const {
+      data: { msg }
+    } = yield call(API.accountManagementAPI.createAccount, data);
+
+
+    let newData = [...accountList];
+    newData = [...newData, data]
+
+    yield fork(fetchAllUsers, { payload: null });
+    yield delay(500)
+    // yield put({
+    //   type: AdminAction.CREATE_ACCOUNT.SUCCESS,
+    //   payload: newData
+    // });
+
+    toast.success("User added successfully");
+  } catch (error) {
+    errorNotification(getError(error));
+    toast.error("Get error");
+  }
+}
+
+
 function* watchFetchListBookings() {
   yield takeLatest(FETCH_BOOKINGS, fetchListBookings);
 }
@@ -130,6 +163,11 @@ function* watchGetAllUsers() {
   yield takeLatest(GET_USERS, fetchAllUsers);
 }
 
+function* watchCreateAccount() {
+  yield takeLatest(CREATE_ACCOUNT, createAccount);
+}
+
+
 export default function* adminSaga() {
-  yield all([watchFetchListBookings(), watchUpdateBooking(), watchCreateFeedback(), watchGetAllUsers()]);
+  yield all([watchFetchListBookings(), watchUpdateBooking(), watchCreateFeedback(), watchGetAllUsers(), watchCreateAccount()]);
 }

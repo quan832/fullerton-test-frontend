@@ -19,6 +19,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
   "& .MuiDialogActions-root": {
     padding: theme.spacing(1),
+    paddingLeft: theme.spacing(2)
   },
 }));
 
@@ -162,16 +163,15 @@ const ViewAccountDialog = (props) => {
         </Grid>
       </DialogContent>
       <DialogActionsStyled>
-        <Button autoFocus >
-          <i className="fas fa-edit" /> Edit
+        <Button autoFocus style={{ marginRight: 15 }}>
+          <i className="fas fa-edit edit-icon" style={{ marginRight: 5 }} />{' '}Edit
         </Button>
-        <Button autoFocus color="secondary">
-          <i className="fas fa-key" /> Reset Password
+        <Button autoFocus color="secondary" style={{ marginRight: 15 }}>
+          <i className="fas fa-key delete-icon" style={{ marginRight: 5 }} />{' '}Reset Password
         </Button>
-        <Button autoFocus color="error">
-          <i className="fas fa-user-slash" /> Suspend
+        <Button autoFocus color="error" style={{ marginRight: 15 }}>
+          <i className="fas fa-user-slash suspend-icon" style={{ marginRight: 5 }} />{' '} Suspend
         </Button>
-
         <div style={{ flex: "1 0 0" }} />
         <ButtonStyled purpleGhost variant="outlined" onClick={closeModal}>
           Cancel

@@ -475,6 +475,30 @@ button:focus {
   }
 }
 
+.edit-icon {
+  color: #fab526;
+  &:hover {
+    background-color: #fab526;
+    color: white;
+  }
+}
+
+.delete-icon {
+  color: #eb6532;
+  &:hover {
+    background-color: #eb6532;
+    color: white;
+  }
+}
+
+.suspend-icon {
+  color: #e74c3c;
+  &:hover {
+    background-color: #e74c3c;
+    color: white;
+  }
+}
+
 .react-action-class {
   margin: 0px auto;
   button {
@@ -923,4 +947,25 @@ tr:nth-child(odd) {
   padding: 0 !important;
   display: flex;
   align-items: center;
+}
+
+.MuiInputBase-input {
+  height: 2.19rem !important;
+  // &:hover,
+  // &:focus,
+  // &:active {
+  //   border-color: #1976d2 !important;
+  // }
+}
+
+.MuiSelect-select {
+  padding-left: 10px !important;
+  font-size: 16px !important;
+  display: flex !important;
+  align-items: center !important;
+  padding-top: 0 !important;
+}
+
+.css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root {
+  padding-left: 10px !important;
 }
