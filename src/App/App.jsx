@@ -9,6 +9,7 @@ import { routes } from 'routes/routes.js';
 import PrivateTemplate from 'template/Private/PrivateTemplate.jsx';
 import LoginTemplate from 'template/Login/LoginTemplate.jsx';
 import AdminTemplate from 'template/Admin/AdminTemplate.jsx';
+import CssBaseline from '@mui/material/CssBaseline';
 
 export const history = createBrowserHistory();
 
@@ -43,14 +44,17 @@ const renderRoute = (Component, routes) => {
 
 function App() {
   return (
-    <Router history={history}>
-      {/* public Route */}
-      <Switch>
-        {Components.map((item) => {
-          return renderRoute(item.Component, item.routes);
-        })}
-      </Switch>
-    </Router>
+    <>
+      <CssBaseline />
+      <Router history={history}>
+        {/* public Route */}
+        <Switch>
+          {Components.map((item) => {
+            return renderRoute(item.Component, item.routes);
+          })}
+        </Switch>
+      </Router>
+    </>
   );
 }
 

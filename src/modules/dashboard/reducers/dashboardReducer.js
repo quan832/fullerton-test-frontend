@@ -231,8 +231,8 @@ const dashboardReducer = (state = initialState, { type, payload }) => {
         isFetching: false,
         error: ''
       };
-    case LOGOUT_USER:
-      return initialState
+    // case LOGOUT_USER:
+    //   return initialState
     default:
       return state;
   }

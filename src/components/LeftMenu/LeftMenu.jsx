@@ -7,12 +7,12 @@ import {
   UserOutlined,
   SmileOutlined,
   ToolOutlined,
-  TableOutlined
+  TableOutlined,
 } from '@ant-design/icons';
 import { Container } from './LeftMenu.styled';
 import logo from 'assets/images/logo.png';
 import { FlexDiv } from 'stylesheet/div/div.styled';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import LoginAction from 'modules/auth/actions/authAction';
 import { Link } from 'react-router-dom';
 import { BsBookmarkHeart } from "react-icons/bs";
@@ -23,7 +23,7 @@ const { Sider } = Layout;
 
 export default function LeftMenu() {
   const [collapsed, setCollapsed] = React.useState(false);
-
+  const { type } = useSelector((state) => state.auth.user)
   const dispatch = useDispatch();
 
   const onLogout = () => {
@@ -75,11 +75,14 @@ export default function LeftMenu() {
               Payment
             </Link>
           </Menu.Item> */}
-          <Menu.Item key="3" icon={<TableOutlined />}>
-            <Link to='/user'>
-              Clinic
-            </Link>
-          </Menu.Item>
+          {type === 'ADMIN' ? (
+            <Menu.Item key="3" icon={<UserOutlined />}>
+              <Link to='/user'>
+                Account
+              </Link>
+            </Menu.Item>
+          ) : null}
+
           {/* <Menu.Item key="sub1" icon={<SmileOutlined />}>
             <Link to='/profile'>
               Profile

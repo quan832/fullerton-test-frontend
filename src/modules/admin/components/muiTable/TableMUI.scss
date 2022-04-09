@@ -1,0 +1,118 @@
+.pagination {
+  display: flex;
+  align-items: baseline;
+  margin-top: 20px;
+  justify-content: space-between;
+  .table-text {
+    color: #1e2327;
+    font-size: 14px;
+    line-height: 20px;
+  }
+  .Table__pagination {
+    display: flex;
+
+    .Table__pageButton,
+    .Table__pageButton_navigation,
+    .table-pagination-over {
+      &.Table__pageButton--active {
+        color: #1e86ff;
+        font-weight: 600;
+      }
+      background: #fff;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      font-size: 16px;
+      font-weight: 400;
+      color: #566371;
+      text-align: center;
+      padding: 4px 5px;
+      margin: 0 8px;
+      cursor: pointer;
+      &:hover {
+        opacity: 0.7;
+      }
+    }
+  }
+}
+
+.-sort-desc {
+  box-shadow: none !important;
+  &:after {
+    content: "▼";
+    margin-left: 14px;
+    color: #828282;
+  }
+}
+
+.-sort-asc {
+  box-shadow: none !important;
+  &:after {
+    content: "▲";
+    margin-left: 14px;
+    color: #828282;
+  }
+}
+
+.react-action-class-table {
+  button {
+    color: #1e86ff;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 20px;
+    width: 100% !important;
+    cursor: pointer;
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+}
+
+.claim-layout-status {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+
+    .claim-status {
+        width: 10px;
+        height: 10px;
+        border-radius: 100%;
+        &.approved {
+            background-color: rgba(61, 140, 64, 0.65);
+        }
+        &.pending {
+            // background-color: #f99b1f;
+            background-color: rgba(37, 61, 161, 0.65);
+        }
+        &.rejected {
+            background-color: rgba(255, 0, 0, 0.65);
+        }
+    }
+
+    .claim-status-text {
+        position: static;
+        height: 20px;
+        left: 16px;
+        top: 0px;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 20px;
+        display: flex;
+        align-items: center;
+        color: #94242b;
+        flex: none;
+        order: 1;
+        flex-grow: 0;
+        margin: 0px 8px;
+        &.approved {
+            color: #3d8c40 !important;
+        }
+        &.pending {
+            color: #253da1 !important;
+        }
+        &.rejected {
+            color: #FF0000 !important;
+        }
+    }
+}

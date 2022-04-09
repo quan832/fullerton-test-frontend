@@ -1,0 +1,39 @@
+.filter-container {
+    z-index: 999;
+    .font-title {
+        width: 234px;
+        height: 32px;
+        left: 104px;
+        top: 88px;
+        font-weight: 700;
+        font-size: 24px;
+        line-height: 32px;
+        color: #1e2327;
+    }
+
+    .horizontal-stretch {
+        justify-content: space-between;
+    }
+
+    .filter-menu-icon {
+        font-style: normal;
+        font-weight: normal;
+        font-size: 25px;
+        line-height: 20px;
+        color: "#8693A2";
+    }
+    .filter-item-selected {
+        display: flex;
+        justify-content: space-between;
+        p {
+            width: 100%;
+        }
+    }
+
+    .css-6ekzlo-MuiButtonBase-root-MuiButton-root {
+        color: #d32f2f !important;
+    }
+    .css-1knaqv7-MuiButtonBase-root-MuiButton-root {
+        color: #1976d2;
+    }
+}

@@ -11,6 +11,7 @@ import PaymentPage from 'pages/Payment/PaymentPage.jsx';
 import ProfilePage from 'pages/profile/ProfilePage.jsx';
 import ResourcesPage from 'pages/Resource/ResourcesPage.jsx';
 import { store } from '../redux/store.js';
+import Account from 'modules/admin/container/Account.jsx';
 
 export function handleLogout() {
   store.dispatch(LoginAction.logoutUser());
@@ -22,11 +23,11 @@ const routesHome = [
     exact: true,
     component: HomePage
   },
-  {
-    path: '/user',
-    exact: true,
-    component: ClinicPage
-  },
+  // {
+  //   path: '/user',
+  //   exact: true,
+  //   component: ClinicPage
+  // },
   // {
   //   path: '/booking',
   //   exact: true,
@@ -66,9 +67,9 @@ const routesAdmin = [
   //   component: ClinicPage1
   // },
   {
-    path: '/account',
+    path: '/user',
     exact: true,
-    component: AccountPage
+    component: Account
   },
 ];
 

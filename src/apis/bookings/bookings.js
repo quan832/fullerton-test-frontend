@@ -10,7 +10,7 @@ const deleteBooking = (id) => {
   return axios.delete(`/bookings/${id}`);
 };
 
-const createBooking = ({ data }) => {
+const createBooking = (data) => {
   return axios.post(`/bookings`, data);
 };
 

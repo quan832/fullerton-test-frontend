@@ -59,17 +59,15 @@ function* deleteBooking({ payload }) {
   try {
     const bookingData = yield select(getBookings);
     yield put({ type: DashboardAction.DELETE_BOOKING.REQUEST, payload: payload });
-    // const {
-    //   data: { message }
-    // } = yield call(API.bookingAPI.deleteBooking, id);
+    console.log(payload)
+    const {
+      data: { message }
+    } = yield call(API.bookingAPI.deleteBooking, payload.id);
 
     let newData = [...bookingData];
     newData = newData.filter((item) => {
-      console.log(item)
-      console.log(payload)
-      return (item.date[0] === payload.date[0] && item.time === payload.time) ? false : true
+      return (item.id === payload.id) ? false : true
     });
-    console.log(newData);
     yield delay(500)
     // yield put({ type: CLOSE_BOOKING_MODAL });
     yield put({ type: DashboardAction.DELETE_BOOKING.SUCCESS, payload: newData });
@@ -91,9 +89,11 @@ function* createNewBooking() {
     const temporary = yield select(getTemporary)
     yield put({ type: DashboardAction.CREATE_BOOKING.REQUEST });
 
-    // const {
-    //   data: { message }
-    // } = yield call(API.bookingAPI.createBooking, payload);
+    const {
+      data: { message }
+    } = yield call(API.bookingAPI.createBooking, temporary);
+
+    console.log(message)
 
     let newData = [...bookingData];
     newData = [...newData, temporary];
@@ -143,7 +143,7 @@ function* createCategory({ payload }) {
 }
 
 function* watchFetchListBookings() {
-  yield takeLatest(FETCH_BOOKINGS, () => console.log('fetch'));
+  yield takeLatest(FETCH_BOOKINGS, fetchListBookings);
 }
 
 function* watchCreateBooking() {
