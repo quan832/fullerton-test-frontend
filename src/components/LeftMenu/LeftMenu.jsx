@@ -18,6 +18,7 @@ import { Link } from 'react-router-dom';
 import { BsBookmarkHeart } from "react-icons/bs";
 
 import { MdPayment, MdManageAccounts } from "react-icons/md";
+import { useRouter } from '../../hooks/useRouter';
 
 const { Sider } = Layout;
 
@@ -30,6 +31,8 @@ export default function LeftMenu() {
     dispatch(LoginAction.logoutUser());
   };
 
+  const router = useRouter()
+  console.log(router)
   return (
     <Container>
       <Sider
@@ -54,7 +57,7 @@ export default function LeftMenu() {
         </div>
         <Divider />
         <Menu
-          defaultSelectedKeys={['1']}
+          defaultSelectedKeys={[router.pathname]}
           defaultOpenKeys={['sub1']}
           mode="inline"
           className="menu-style"
@@ -65,7 +68,7 @@ export default function LeftMenu() {
         // theme="dark"
         // inlineCollapsed={this.state.collapsed}
         >
-          <Menu.Item key="1" icon={<BsBookmarkHeart />}>
+          <Menu.Item key={type === 'ADMIN' ? '/admin' : '/'} icon={<BsBookmarkHeart />}>
             <Link to='/'>
               Booking
             </Link>
@@ -76,11 +79,18 @@ export default function LeftMenu() {
             </Link>
           </Menu.Item> */}
           {type === 'ADMIN' ? (
-            <Menu.Item key="3" icon={<UserOutlined />}>
-              <Link to='/user'>
-                Account
-              </Link>
-            </Menu.Item>
+            <>
+              <Menu.Item key="/user" icon={<UserOutlined />}>
+                <Link to='/user'>
+                  Account
+                </Link>
+              </Menu.Item>
+              <Menu.Item key="/provider" icon={<UserOutlined />}>
+                <Link to='/provider'>
+                  Provider
+                </Link>
+              </Menu.Item>
+            </>
           ) : null}
 
           {/* <Menu.Item key="sub1" icon={<SmileOutlined />}>

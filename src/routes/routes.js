@@ -12,6 +12,7 @@ import ProfilePage from 'pages/profile/ProfilePage.jsx';
 import ResourcesPage from 'pages/Resource/ResourcesPage.jsx';
 import { store } from '../redux/store.js';
 import Account from 'modules/admin/container/Account.jsx';
+import Provider from 'modules/admin/container/Provider.jsx';
 
 export function handleLogout() {
   store.dispatch(LoginAction.logoutUser());
@@ -70,6 +71,11 @@ const routesAdmin = [
     path: '/user',
     exact: true,
     component: Account
+  },
+  {
+    path: '/provider',
+    exact: true,
+    component: Provider
   },
 ];
 

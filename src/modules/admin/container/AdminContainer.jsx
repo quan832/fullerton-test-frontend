@@ -17,6 +17,7 @@ import StatusClaimTable from '../components/muiTable/StatusClaimTable';
 import SearchBarHeader from "../components/searchBar/SearchBarHeader";
 import FilterComponent from '../components/Filter/FilterNotificationsQueue';
 import moment from 'moment';
+import BookingDialogModal from '../components/BookingManagement/BookingModal';
 const HeaderComponent = (props) => {
   let classes = {
     "-sort-asc": props.isSortedDesc !== undefined && !props.isSortedDesc,
@@ -40,6 +41,18 @@ export default function AdminContainer() {
   const [skip, setSkip] = useState(0);
   const [take, setTake] = useState(10);
   const [sortBy, setSortBy] = useState([]); //sort by include {id: (db field), desc: true/false}
+  const [viewMode, setViewMode] = useState(false);
+  const [selectedBooking, setSelectedBooking] = React.useState(null)
+  const viewClick = (data) => {
+    // Here you can view the data and make forward action for view data
+    setSelectedBooking(data);
+    setViewMode(true);
+  };
+
+  const closeModal = () => {
+    setSelectedBooking(null)
+    setViewMode(false);
+  }
 
   const onFetchAdminBooking = () => {
     dispatch(AdminAction.fetchBookings({ page: page }));
@@ -105,7 +118,7 @@ export default function AdminContainer() {
   };
 
   const onApprove = (id, status) => {
-    dispatch(AdminAction.updateBooking(id, { dateId: id}));
+    dispatch(AdminAction.updateBooking(id, { dateId: id }));
   };
 
   const columns = React.useMemo(() => [
@@ -236,7 +249,7 @@ export default function AdminContainer() {
             )}
             <button
               className="react-table-edit-button"
-              onClick={() => toggleModal(typeModal.edit, value)}>
+              onClick={() => viewClick(tableInstance.cell.row.original)}>
               <i className="fas fa-eye" />
             </button>
           </div>
@@ -267,6 +280,7 @@ export default function AdminContainer() {
           />
         </Spin>
         <FeedbackModal onOk={onRejectedBooking} key={Math.random()} />
+        <BookingDialogModal openDialog={viewMode} selectedUser={selectedBooking} callBackClose={closeModal} />
       </div>
     </DashboardContainerStyled>
   );

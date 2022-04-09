@@ -5,27 +5,23 @@ import AccountManagementTable from '../components/AccountManagementTable/Account
 import SearchBarHeader from '../components/searchBar/SearchBarHeader'
 import AdminAction from '../actions/adminAction';
 import { useDispatch, useSelector } from 'react-redux'
-import { Spin } from 'antd'
-export default function Account() {
+import ProviderManagement from '../components/ProviderManagement/ProviderManagement'
+export default function Provider() {
     const dispatch = useDispatch()
     const fetchUsers = () => {
         dispatch(AdminAction.fetchUsers())
     }
 
-    React.useEffect(() => {
-        fetchUsers()
-    }, [])
-
-    const { isFetching } = useSelector((state) => state.admin)
+    // React.useEffect(() => {
+    //     fetchUsers()
+    // }, [])
 
 
     return (
         <DashboardContainerStyled>
-            <Header title="Account Management" />
+            <Header title="Provider Management" />
             <div className="mb-20"></div>
-            <Spin spinning={isFetching} style={{ minHeight: '-webkit-fill-available' }}>
-                <AccountManagementTable />
-            </Spin>
+            <ProviderManagement />
         </DashboardContainerStyled>
     )
 }
