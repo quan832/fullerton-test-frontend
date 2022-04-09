@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import Button from "@mui/material/Button";
+import { ButtonStyled } from 'stylesheet/Button/Button.styled'
 import { styled } from "@mui/material/styles";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -33,20 +34,17 @@ const BootstrapDialogTitle = (props) => {
   const { children, onClose, ...other } = props;
 
   return (
-    <DialogTitle sx={{ m: 0, p: 2, fontWeight: "600" }} {...other}>
+    <DialogTitle sx={{ m: 0, p: 2, fontWeight: "600" }} style={{ display: "flex", alignItems: 'center', justifyContent: 'space-between' }} {...other}>
       {children}
       {onClose ? (
         <IconButton
           aria-label="close"
           onClick={onClose}
           sx={{
-            position: "absolute",
-            right: 8,
-            top: 8,
             color: (theme) => theme.palette.grey[500],
           }}
         >
-          <CloseIcon />
+          <i className="fas fa-xmark" ></i>
         </IconButton>
       ) : null}
     </DialogTitle>
@@ -75,7 +73,7 @@ const EditAccountDialog = (props) => {
   const handleChangeWhiteLabel = (event) => {
     setWhiteLabels(event.target.value);
   };
-  
+
   const handleClose = () => {
     // props.closeAddAccountDialog();
   };
@@ -235,18 +233,19 @@ const EditAccountDialog = (props) => {
           </Grid>
         </DialogContent>
         <DialogActionsStyled>
-          <Button variant="outlined" onClick={closeModal}>
+          <ButtonStyled purpleGhost variant="outlined" onClick={closeModal}>
             Cancel
-          </Button>
+          </ButtonStyled>
 
-          <Button
+          <ButtonStyled
             variant="contained"
             autoFocus
             onClick={() => alert("Add")}
             color="primary"
+            purple
           >
             Save Change
-          </Button>
+          </ButtonStyled>
         </DialogActionsStyled>
       </BootstrapDialog>
     </div>

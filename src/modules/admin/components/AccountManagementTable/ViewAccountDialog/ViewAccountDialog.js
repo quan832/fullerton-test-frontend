@@ -11,6 +11,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import Stack from "@mui/material/Stack";
 import { Grid } from "@material-ui/core";
 import "./ViewAccountDialog.scss";
+import { ButtonStyled } from "stylesheet/Button/Button.styled";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -172,9 +173,9 @@ const ViewAccountDialog = (props) => {
         </Button>
 
         <div style={{ flex: "1 0 0" }} />
-        <Button variant="outlined" onClick={closeModal}>
+        <ButtonStyled purpleGhost variant="outlined" onClick={closeModal}>
           Cancel
-        </Button>
+        </ButtonStyled>
       </DialogActionsStyled>
     </BootstrapDialog>
   );

@@ -36,20 +36,17 @@ const BootstrapDialogTitle = (props) => {
   const { children, onClose, ...other } = props;
 
   return (
-    <DialogTitle sx={{ m: 0, p: 2, fontWeight: "600" }} {...other}>
+    <DialogTitle sx={{ m: 0, p: 2, fontWeight: "600" }} style={{ display: "flex", alignItems: 'center', justifyContent: 'space-between' }} {...other}>
       {children}
       {onClose ? (
         <IconButton
           aria-label="close"
           onClick={onClose}
           sx={{
-            position: "absolute",
-            right: 8,
-            top: 8,
             color: (theme) => theme.palette.grey[500],
           }}
         >
-          <CloseIcon />
+          <i className="fas fa-xmark" ></i>
         </IconButton>
       ) : null}
     </DialogTitle>
